@@ -12,15 +12,11 @@ export interface IUser extends Document {
 }
 
 const UserSchema = new Schema({
-  firstName: {
+  username: {
     type: String,
     required: true,
-    minLength: 8
-  },
-  lastName: {
-    type: String,
-    required: true,
-    minLength: 8
+    minLength: 3,
+    maxLength: 15
   },
   email: {
     type: String,
@@ -37,10 +33,6 @@ const UserSchema = new Schema({
     type: String,
     minLength: 8
   }
-});
-
-UserSchema.virtual('fullName').get(function () {
-  return `${this.firstName} ${this.lastName}`;
 });
 
 UserSchema.virtual('postCount', {
