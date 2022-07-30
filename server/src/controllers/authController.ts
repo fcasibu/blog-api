@@ -56,10 +56,7 @@ export const signUp = catchAsync(async (req, res, next) => {
 
 export const verify = [
   passport.authenticate('jwt', { session: false }),
-  (req: Request, res: Response) => {
-    return res.status(200).json({
-      status: 'success',
-      user: req.user
-    });
+  (req: Request, res: Response, next: NextFunction) => {
+    next();
   }
 ];
