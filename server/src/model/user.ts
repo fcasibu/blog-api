@@ -1,5 +1,15 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 import { hash, compare } from 'bcryptjs';
+
+export interface IUser extends Document {
+  _id: Types.ObjectId;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  passwordConfirm?: string;
+  comparePassword(inputPassword: string): Promise<boolean>;
+}
 
 const UserSchema = new Schema({
   firstName: {
@@ -48,7 +58,7 @@ UserSchema.pre('save', async function (next) {
 });
 
 UserSchema.methods.comparePassword = async function (inputPassword: string) {
-  return compare(inputPassword, this.password);
+  return await compare(inputPassword, this.password);
 };
 
 const User = model('User', UserSchema);

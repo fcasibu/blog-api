@@ -12,7 +12,8 @@ declare global {
       lastName: string;
       email: string;
       password: string;
-      passowrdConfirm?: string;
+      passwordConfirm?: string;
+      comparePassword(inputPassword: string): Promise<boolean>;
     }
     interface ResponseError extends Error {
       status?: number;
