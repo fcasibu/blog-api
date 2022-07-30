@@ -48,7 +48,7 @@ export const signUp = catchAsync(async (req, res, next) => {
     passwordConfirm
   });
 
-  return res.status(200).json({
+  return res.status(201).json({
     status: 'success',
     message: 'Successfully created a new user'
   });
