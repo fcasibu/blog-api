@@ -17,6 +17,10 @@ const PostSchema = new Schema({
     required: true,
     minLength: 5000
   },
+  published: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
