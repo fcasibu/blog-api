@@ -8,8 +8,7 @@ declare global {
   namespace Express {
     interface User {
       _id: mongoose.Types.ObjectId;
-      firstName: string;
-      lastName: string;
+      username: string;
       email: string;
       password: string;
       passwordConfirm?: string;

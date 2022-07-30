@@ -3,8 +3,7 @@ import { hash, compare } from 'bcryptjs';
 
 export interface IUser extends Document {
   _id: Types.ObjectId;
-  firstName: string;
-  lastName: string;
+  username: string;
   email: string;
   password: string;
   passwordConfirm?: string;
