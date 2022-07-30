@@ -10,6 +10,8 @@ dotenv.config();
 import RequestError from './types/express/';
 import User from './model/user';
 
+import authRouter from './routes/auth';
+
 const app = express();
 
 const options = {
@@ -20,9 +22,7 @@ const options = {
 passport.use(
   new JWTStrategy(options, async (payload, done) => {
     try {
-      const user = await User.findById(payload.id, '-password')
-        .populate('postCount')
-        .exec();
+      const user = await User.findById(payload.id, '-password').exec();
       if (!user) return done(null, false, { message: 'User does not exist' });
 
       return done(null, user);
@@ -36,6 +36,8 @@ app.use(passport.initialize());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
   next(createError(404));
