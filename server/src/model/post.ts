@@ -10,7 +10,7 @@ const PostSchema = new Schema({
   title: {
     type: String,
     required: true,
-    minLength: 55
+    minLength: 10
   },
   body: {
     type: String,
