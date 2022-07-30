@@ -10,6 +10,8 @@ import {
   getUserPost,
   updateUserPost
 } from '../controllers/userController';
+import isValid from '../middlewares/isValid';
+import { validatePost } from '../utils/validators';
 
 const router = express.Router();
 
@@ -20,17 +22,17 @@ router.route('/:userId/posts').get(getAllUserPost);
 router
   .route('/:userId/posts/draft')
   .get(getAllUnpublishedPost)
-  .post(createUserDraftPost);
+  .post(validatePost(), isValid, createUserDraftPost);
 
 router
   .route('/:userId/posts/publish')
   .get(getAllPublishedPost)
-  .post(createUserPost);
+  .post(validatePost(), isValid, createUserPost);
 
 router
   .route('/:userId/posts/:postId')
   .get(getUserPost)
-  .put(updateUserPost)
+  .put(validatePost(), isValid, updateUserPost)
   .delete(deleteUserPost);
 
 export default router;
