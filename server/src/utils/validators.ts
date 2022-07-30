@@ -19,7 +19,7 @@ export const validateSignUp = function () {
       .withMessage(
         'First name must have a min and max length of 3-15 characters'
       )
-      .matches(/^[A-Za-z\s]+$/)
+      .matches(/^[A-Za-z0-9\s]+$/)
       .withMessage('Username must be alphanumeric'),
     check('email')
       .isEmail()
@@ -38,5 +38,18 @@ export const validateSignUp = function () {
       .isLength({ min: 8 })
       .withMessage('Password must have at least 8 characters')
       .custom((value, { req }) => value === req.body.password)
+  ];
+};
+
+export const validatePost = function () {
+  return [
+    check('title')
+      .matches(/^[A-Za-z0-9\s]+$/)
+      .withMessage('Username must be alphanumeric')
+      .isLength({ min: 10 })
+      .withMessage('Title must have a minimum length of 10 characters'),
+    check('body')
+      .isLength({ min: 55, max: 5000 })
+      .withMessage('Body must hae a min and max length of 55-5000 characters')
   ];
 };
