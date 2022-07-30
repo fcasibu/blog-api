@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { hash, compare } from 'bcryptjs';
 
 const UserSchema = new Schema({
   firstName: {
@@ -24,7 +25,6 @@ const UserSchema = new Schema({
   },
   passwordConfirm: {
     type: String,
-    required: true,
     minLength: 8
   }
 });
@@ -39,6 +39,17 @@ UserSchema.virtual('postCount', {
   foreignField: 'author',
   count: true
 });
+
+UserSchema.pre('save', async function (next) {
+  this.password = await hash(this.password, 10);
+
+  this.passwordConfirm = undefined;
+  next();
+});
+
+UserSchema.methods.comparePassword = async function (inputPassword: string) {
+  return compare(inputPassword, this.password);
+};
 
 const User = model('User', UserSchema);
 
