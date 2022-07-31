@@ -3,7 +3,6 @@ import express, { NextFunction, Request, Response } from 'express';
 import logger from 'morgan';
 import passport from 'passport';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,6 +10,8 @@ import RequestError from './types/express/';
 import User from './model/user';
 
 import authRouter from './routes/auth';
+import postRouter from './routes/post';
+import userRouter from './routes/user';
 
 const app = express();
 
@@ -27,7 +28,7 @@ passport.use(
 
       return done(null, user);
     } catch (err) {
-      done(err);
+      return done(err);
     }
   })
 );
@@ -38,6 +39,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/auth', authRouter);
+app.use('/api/posts', postRouter);
+app.use('/api/users', userRouter);
 
 app.use((req, res, next) => {
   next(createError(404));
@@ -53,7 +56,8 @@ app.use(
     // render the error page
     res.status(err.status || 500).json({
       status: 'fail',
-      message: err.message
+      message: err.message,
+      stack: err.stack
     });
   }
 );
