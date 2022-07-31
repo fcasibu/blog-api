@@ -1,5 +1,7 @@
 import User from '../model/user';
 import Post from '../model/post';
+import Comment from '../model/comment';
+
 import catchAsync from '../utils/catchAsync';
 
 // TODO: Refactor this
@@ -74,11 +76,19 @@ export const createUserPost = catchAsync(async (req, res, next) => {
 
 // TODO: GET request for author's post
 export const getUserPost = catchAsync(async (req, res, next) => {
-  const post = await Post.findById(req.params.postId).exec();
+  const commentQuery = Comment.find({ post: req.params.postId }).exec();
+  const postQuery = Post.findById(req.params.postId).exec();
+
+  const [post, comments] = await Promise.all([postQuery, commentQuery]);
+
+  if (!post) {
+    return next(new Error('Post does not exist'));
+  }
 
   return res.status(200).json({
     status: 'success',
-    post
+    post,
+    comments
   });
 });
 
@@ -107,7 +117,44 @@ export const updateUserPost = catchAsync(async (req, res, next) => {
   });
 });
 
+export const getAllComment = catchAsync(async (req, res, next) => {
+  const comments = await Comment.find({ post: req.params.postId }).exec();
+
+  return res.status(200).json({
+    status: 'success',
+    comments
+  });
+});
+
+export const getComment = catchAsync(async (req, res, next) => {
+  const comment = await Comment.findById(req.params.commentId).exec();
+
+  return res.status(200).json({
+    status: 'success',
+    comment
+  });
+});
+
 // TODO: DELETE request for author's post comment
-export const deleteComment = catchAsync(async (req, res, next) => {});
+export const deleteComment = catchAsync(async (req, res, next) => {
+  await Comment.findByIdAndDelete(req.params.commentId).exec();
+
+  return res.status(204).json({
+    status: 'success'
+  });
+});
 // TODO: PUT request for author's post comment
-export const updateComment = catchAsync(async (req, res, next) => {});
+export const updateComment = catchAsync(async (req, res, next) => {
+  const comment = await Comment.findByIdAndUpdate(
+    req.params.commentId,
+    req.body,
+    {
+      new: true
+    }
+  ).exec();
+
+  return res.status(200).json({
+    status: 'success',
+    comment
+  });
+});
