@@ -103,6 +103,8 @@ export const getAllComment = catchAsync(async (req, res, next) => {
 export const getComment = catchAsync(async (req, res, next) => {
   const comment = await Comment.findById(req.params.commentId).exec();
 
+  if (!comment) return next(new Error('Comment does not exist'));
+
   return sendResponse(res, 200, { comment });
 });
 
@@ -121,5 +123,8 @@ export const updateComment = catchAsync(async (req, res, next) => {
       new: true
     }
   ).exec();
+
+  if (!comment) return next(new Error('Comment does not exist'));
+
   return sendResponse(res, 200, { comment });
 });
