@@ -50,15 +50,15 @@ export const validatePost = function () {
       .withMessage('Title must have a minimum length of 10 characters'),
     check('body')
       .isLength({ min: 55, max: 5000 })
-      .withMessage('Body must hae a min and max length of 55-5000 characters')
+      .withMessage('Body must have a min and max length of 55-5000 characters')
   ];
 };
 
 export const validateComment = function () {
   return [
     check('text')
-      .matches(/^[A-Za-z0-9\s]+$/)
-      .withMessage('Comment must be alphanumeric')
+      .matches(/^[A-Za-z0-9 _.,!"'&/$]+$/)
+      .withMessage('Comment must not contain invalid characters')
       .isLength({ min: 5, max: 500 })
       .withMessage(
         'Comment must have a min and max length of 55-5000 characters'
