@@ -1,10 +1,16 @@
 import Post from '../model/post';
 import Comment from '../model/comment';
 import catchAsync from '../utils/catchAsync';
+import { paginate } from '../utils/paginate';
 
 // TODO: Get request for posts
 export const getAllPost = catchAsync(async (req, res, next) => {
-  const posts = await Post.find({ published: { $eq: true } }).exec();
+  const skip = paginate(Number(req.query.page ?? 1));
+  const posts = await Post.find({ published: { $eq: true } })
+    .skip(skip)
+    .limit(10)
+    .sort('-createdAt')
+    .exec();
 
   return res.status(200).json({
     status: 'success',
