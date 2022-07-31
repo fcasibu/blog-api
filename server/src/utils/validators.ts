@@ -46,11 +46,16 @@ export const validatePost = function () {
     check('title')
       .matches(/^[A-Za-z0-9\s]+$/)
       .withMessage('Username must be alphanumeric')
-      .isLength({ min: 10 })
-      .withMessage('Title must have a minimum length of 10 characters'),
+      .isLength({ min: 5 })
+      .withMessage('Title must have a minimum length of 5 characters'),
     check('body')
       .isLength({ min: 55, max: 5000 })
-      .withMessage('Body must have a min and max length of 55-5000 characters')
+      .withMessage('Body must have a min and max length of 55-5000 characters'),
+    check('tag')
+      .matches(/^[A-Za-z0-9\s]+$/)
+      .withMessage('Username must be alphanumeric')
+      .isLength({ min: 2, max: 7 })
+      .withMessage('Tag must have a min and max length of 2-7 characters')
   ];
 };
 
