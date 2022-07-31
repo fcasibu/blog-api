@@ -53,3 +53,15 @@ export const validatePost = function () {
       .withMessage('Body must hae a min and max length of 55-5000 characters')
   ];
 };
+
+export const validateComment = function () {
+  return [
+    check('text')
+      .matches(/^[A-Za-z0-9\s]+$/)
+      .withMessage('Comment must be alphanumeric')
+      .isLength({ min: 5, max: 500 })
+      .withMessage(
+        'Comment must have a min and max length of 55-5000 characters'
+      )
+  ];
+};
