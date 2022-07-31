@@ -4,6 +4,7 @@ import passport from 'passport';
 
 import User, { IUser } from '../model/user';
 import catchAsync from '../utils/catchAsync';
+import sendResponse from '../utils/sendResponse';
 
 export const signIn = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
@@ -20,10 +21,7 @@ export const signIn = catchAsync(async (req, res, next) => {
     expiresIn: '30d'
   });
 
-  return res.status(200).json({
-    status: 'success',
-    token
-  });
+  return sendResponse(res, 200, { token });
 });
 
 export const signOut = (req: Request, res: Response, next: NextFunction) => {
@@ -32,26 +30,21 @@ export const signOut = (req: Request, res: Response, next: NextFunction) => {
   const token = jwt.sign({ id: 1 }, process.env.SECRET_KEY as string, {
     expiresIn: '1'
   });
-  return res.status(200).json({
-    status: 'success',
-    token
-  });
+
+  return sendResponse(res, 200, { token });
 };
 
 export const signUp = catchAsync(async (req, res, next) => {
   const { username, email, password, passwordConfirm } = req.body;
 
-  await User.create({
+  const user = await User.create({
     username,
     email,
     password,
     passwordConfirm
   });
 
-  return res.status(201).json({
-    status: 'success',
-    message: 'Successfully created a new user'
-  });
+  return sendResponse(res, 201, { user });
 });
 
 export const verify = [

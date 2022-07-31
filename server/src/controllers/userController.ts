@@ -3,16 +3,14 @@ import Post from '../model/post';
 import Comment from '../model/comment';
 
 import catchAsync from '../utils/catchAsync';
+import sendResponse from '../utils/sendResponse';
 
 // TODO: Refactor this
 
 // TODO: GET request for all author's post
 export const getAllUserPost = catchAsync(async (req, res, next) => {
   const posts = await Post.find({ author: req.params.userId }).exec();
-  return res.status(200).json({
-    status: 'success',
-    posts
-  });
+  return sendResponse(res, 200, { posts });
 });
 
 // TODO: GET request for all author's unpublished post
@@ -22,10 +20,7 @@ export const getAllUnpublishedPost = catchAsync(async (req, res, next) => {
     published: { $eq: false }
   }).exec();
 
-  return res.status(200).json({
-    status: 'success',
-    posts
-  });
+  return sendResponse(res, 200, { posts });
 });
 
 // TODO: GET request for all author's published post
@@ -35,10 +30,7 @@ export const getAllPublishedPost = catchAsync(async (req, res, next) => {
     published: { $eq: true }
   }).exec();
 
-  return res.status(200).json({
-    status: 'success',
-    posts
-  });
+  return sendResponse(res, 200, { posts });
 });
 
 // TODO: POST request for author's unpublished post
@@ -51,10 +43,7 @@ export const createUserDraftPost = catchAsync(async (req, res, next) => {
     body
   });
 
-  return res.status(201).json({
-    status: 'success',
-    post
-  });
+  return sendResponse(res, 201, { post });
 });
 
 // TODO: POST request for author's post
@@ -68,10 +57,7 @@ export const createUserPost = catchAsync(async (req, res, next) => {
     published: true
   });
 
-  return res.status(201).json({
-    status: 'success',
-    post
-  });
+  return sendResponse(res, 201, { post });
 });
 
 // TODO: GET request for author's post
@@ -85,20 +71,14 @@ export const getUserPost = catchAsync(async (req, res, next) => {
     return next(new Error('Post does not exist'));
   }
 
-  return res.status(200).json({
-    status: 'success',
-    post,
-    comments
-  });
+  return sendResponse(res, 200, { post, comments });
 });
 
 // TODO: DELETE request for author's post
 export const deleteUserPost = catchAsync(async (req, res, next) => {
   await Post.findByIdAndDelete(req.params.postId).exec();
 
-  return res.status(204).json({
-    status: 'success'
-  });
+  return sendResponse(res, 204, {});
 });
 
 // TODO: PUT request for author's post
@@ -111,37 +91,26 @@ export const updateUserPost = catchAsync(async (req, res, next) => {
     return next(new Error('Post does not exist'));
   }
 
-  return res.status(200).json({
-    status: 'success',
-    post
-  });
+  return sendResponse(res, 200, { post });
 });
 
 export const getAllComment = catchAsync(async (req, res, next) => {
   const comments = await Comment.find({ post: req.params.postId }).exec();
 
-  return res.status(200).json({
-    status: 'success',
-    comments
-  });
+  return sendResponse(res, 200, { comments });
 });
 
 export const getComment = catchAsync(async (req, res, next) => {
   const comment = await Comment.findById(req.params.commentId).exec();
 
-  return res.status(200).json({
-    status: 'success',
-    comment
-  });
+  return sendResponse(res, 200, { comment });
 });
 
 // TODO: DELETE request for author's post comment
 export const deleteComment = catchAsync(async (req, res, next) => {
   await Comment.findByIdAndDelete(req.params.commentId).exec();
 
-  return res.status(204).json({
-    status: 'success'
-  });
+  return sendResponse(res, 204, {});
 });
 // TODO: PUT request for author's post comment
 export const updateComment = catchAsync(async (req, res, next) => {
@@ -152,9 +121,5 @@ export const updateComment = catchAsync(async (req, res, next) => {
       new: true
     }
   ).exec();
-
-  return res.status(200).json({
-    status: 'success',
-    comment
-  });
+  return sendResponse(res, 200, { comment });
 });
