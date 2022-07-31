@@ -1,9 +1,19 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types, Document } from 'mongoose';
 import { DateTime } from 'luxon';
+
+export interface IPost extends Document {
+  _id: Types.ObjectId;
+  author: Types.ObjectId;
+  title: string;
+  body: string;
+  tag: string;
+  published: boolean;
+  createdAt: Date;
+}
 
 const PostSchema = new Schema({
   author: {
-    type: Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: 'User',
     required: true
   },
@@ -44,6 +54,6 @@ PostSchema.virtual('commentCount', {
   count: true
 });
 
-const Post = model('Post', PostSchema);
+const Post = model<IPost>('Post', PostSchema);
 
 export default Post;

@@ -52,6 +52,6 @@ UserSchema.methods.comparePassword = async function (inputPassword: string) {
   return await compare(inputPassword, this.password);
 };
 
-const User = model('User', UserSchema);
+const User = model<IUser>('User', UserSchema);
 
 export default User;

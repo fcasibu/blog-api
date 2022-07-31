@@ -1,14 +1,22 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 import { DateTime } from 'luxon';
+
+export interface IComment extends Document {
+  _id: Types.ObjectId;
+  post: Types.ObjectId;
+  user: Types.ObjectId;
+  text: string;
+  createdAt: Date;
+}
 
 const CommentSchema = new Schema({
   post: {
-    type: Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: 'Post',
     required: true
   },
   user: {
-    type: Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: 'User',
     required: true
   },
@@ -32,6 +40,6 @@ CommentSchema.virtual('relativeTime').get(function () {
   return DateTime.fromJSDate(this.createdAt).toRelativeCalendar();
 });
 
-const Comment = model('Comment', CommentSchema);
+const Comment = model<IComment>('Comment', CommentSchema);
 
 export default Comment;
