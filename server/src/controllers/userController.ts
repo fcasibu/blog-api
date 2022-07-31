@@ -97,8 +97,17 @@ export const updateUserPost = catchAsync(async (req, res, next) => {
     new: true
   }).exec();
 
+  if (!post) {
+    return next(new Error('Post does not exist'));
+  }
+
   return res.status(200).json({
     status: 'success',
     post
   });
 });
+
+// TODO: DELETE request for author's post comment
+export const deleteComment = catchAsync(async (req, res, next) => {});
+// TODO: PUT request for author's post comment
+export const updateComment = catchAsync(async (req, res, next) => {});
