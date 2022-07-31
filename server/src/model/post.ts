@@ -18,6 +18,11 @@ const PostSchema = new Schema({
     minLength: 55,
     maxLength: 5000
   },
+  tag: {
+    type: String,
+    minLength: 2,
+    maxLength: 7
+  },
   published: {
     type: Boolean,
     default: false
