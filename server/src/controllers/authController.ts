@@ -8,12 +8,12 @@ import catchAsync from '../utils/catchAsync';
 export const signIn = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne<IUser>({ email }).exec();
+  const user = await User.findOne({ email }).exec();
   if (!user) {
-    next(new Error('User does not exist'));
+    return next(new Error('User does not exist'));
   }
   if (!(await user?.comparePassword(password))) {
-    next(new Error('Invalid Password'));
+    return next(new Error('Invalid Password'));
   }
 
   const token = jwt.sign({ id: user?._id }, process.env.SECRET_KEY as string, {
