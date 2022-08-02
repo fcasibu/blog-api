@@ -16,13 +16,17 @@ const initialState = {
 export default function SignUp() {
   const { signUp } = React.useContext(AuthContext);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
   const { formValues, changeHandler, errors, setErrors } =
     useForm(initialState);
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setIsLoading(true);
     const response = await signUp(formValues);
+    setIsLoading(false);
+
     if (response.data.errors) return setErrors(response.data.errors);
 
     navigate('/signin');
@@ -35,7 +39,7 @@ export default function SignUp() {
         <div className={s['image-container']}>
           <img src={image} alt="" />
         </div>
-        <Form onSubmit={submitHandler}>
+        <Form onSubmit={submitHandler} isLoading={isLoading}>
           <FormControl id="username" label="Username" errors={errors}>
             <Input
               type="text"

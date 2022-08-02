@@ -16,7 +16,8 @@ const initialState = {
 export default function SignIn() {
   const { signIn, verifyUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { formValues, changeHandler, errors, setErrors } =
+  const [isLoading, setIsLoading] = React.useState(false);
+  const { formValues, errors, changeHandler, setErrors } =
     useForm(initialState);
 
   const submitHandler = async (e: React.FormEvent) => {
@@ -27,6 +28,7 @@ export default function SignIn() {
       if (response.data.errors) return setErrors(response.data.errors);
 
       localStorage.setItem('token', response.data.token);
+      setIsLoading(true);
       await verifyUser();
       navigate('/');
     } catch (err) {
@@ -41,7 +43,7 @@ export default function SignIn() {
         <div className={s['image-container']}>
           <img src={image} alt="" />
         </div>
-        <Form onSubmit={submitHandler}>
+        <Form onSubmit={submitHandler} isLoading={isLoading}>
           <FormControl id="email" label="Email Address" errors={errors}>
             <Input
               type="email"
