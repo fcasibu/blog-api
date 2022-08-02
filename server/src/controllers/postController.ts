@@ -11,6 +11,8 @@ export const getAllPost = catchAsync(async (req, res, next) => {
     .skip(skip)
     .limit(10)
     .sort('-createdAt')
+    .populate({ path: 'author', select: '-password' })
+    .populate('commentCount')
     .exec();
 
   return sendResponse(res, 200, { posts });
