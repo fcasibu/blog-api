@@ -1,6 +1,7 @@
 import createError from 'http-errors';
 import express, { NextFunction, Request, Response } from 'express';
 import logger from 'morgan';
+import cors from 'cors';
 import passport from 'passport';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import dotenv from 'dotenv';
@@ -34,6 +35,7 @@ passport.use(
 );
 
 app.use(passport.initialize());
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
