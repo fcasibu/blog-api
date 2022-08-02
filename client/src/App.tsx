@@ -1,23 +1,28 @@
-import React from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Header from './components/Header';
+import AuthProvider from './context/AuthProvider';
+import AppRoute from './routes';
+import './GlobalStyle.css';
+import DBProvider from './context/DBProvider';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function ErrorFallback() {
+  return <div>Hello World!</div>;
 }
 
-export default App;
+export default function App() {
+  return (
+    <AuthProvider>
+      <DBProvider>
+        <Router>
+          <div className="container">
+            <Header />
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+              <AppRoute />
+            </ErrorBoundary>
+          </div>
+        </Router>
+      </DBProvider>
+    </AuthProvider>
+  );
+}
