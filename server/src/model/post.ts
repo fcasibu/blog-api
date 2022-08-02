@@ -11,37 +11,40 @@ export interface IPost extends Document {
   createdAt: Date;
 }
 
-const PostSchema = new Schema({
-  author: {
-    type: Types.ObjectId,
-    ref: 'User',
-    required: true
+const PostSchema = new Schema(
+  {
+    author: {
+      type: Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    title: {
+      type: String,
+      required: true,
+      minLength: 5
+    },
+    body: {
+      type: String,
+      required: true,
+      minLength: 55,
+      maxLength: 5000
+    },
+    tag: {
+      type: String,
+      minLength: 2,
+      maxLength: 7
+    },
+    published: {
+      type: Boolean,
+      default: false
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
   },
-  title: {
-    type: String,
-    required: true,
-    minLength: 5
-  },
-  body: {
-    type: String,
-    required: true,
-    minLength: 55,
-    maxLength: 5000
-  },
-  tag: {
-    type: String,
-    minLength: 2,
-    maxLength: 7
-  },
-  published: {
-    type: Boolean,
-    default: false
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
 
 PostSchema.virtual('formattedDate').get(function () {
   return DateTime.fromJSDate(this.createdAt).toLocaleString(DateTime.DATE_MED);
