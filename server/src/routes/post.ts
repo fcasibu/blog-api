@@ -10,13 +10,11 @@ import { validateComment } from '../utils/validators';
 
 const router = express.Router();
 
-router.use(verify);
-
 router.route('/').get(getAllPost);
 
 router
   .route('/:postId')
   .get(getPost)
-  .post(validateComment(), isValid, createComment);
+  .post(verify, validateComment(), isValid, createComment);
 
 export default router;
