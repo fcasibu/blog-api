@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
+import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import Form, { FormControl, Input } from '../../components/Form';
 import useForm from '../../hooks/useForm';
 import image from '../../assets/sign-in.png';
 import s from './Auth.module.css';
+import handleAuthError from '../../utils/handleAuthError';
 
 const initialState = {
   email: '',
@@ -17,7 +19,6 @@ export default function SignIn() {
   const { formValues, changeHandler, errors, setErrors } =
     useForm(initialState);
 
-  // TODO: Refactor submitHandler
   const submitHandler = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
@@ -26,22 +27,10 @@ export default function SignIn() {
       if (response.data.errors) return setErrors(response.data.errors);
 
       localStorage.setItem('token', response.data.token);
-
       await verifyUser();
       navigate('/');
     } catch (err) {
-      switch (err.response.data.message) {
-        case 'Invalid Password':
-          setErrors([{ param: 'password', msg: 'Invalid Password' }]);
-          break;
-        case 'User does not exist':
-          setErrors([
-            { param: 'email', msg: 'The email you entered does not exist' }
-          ]);
-          break;
-        default:
-          throw new Error('Unexpected message');
-      }
+      setErrors(handleAuthError(err as AxiosError));
     }
   };
 
