@@ -22,12 +22,18 @@ export interface IPost {
   __v: number;
 }
 
-interface IDatabase {
-  posts: IPost[];
+export interface ITags {
+  tag: string;
 }
 
-export const DBContext = React.createContext<IDatabase>({
-  posts: []
+interface IDatabase {
+  posts: IPost[];
+  tags: ITags[];
+  newPosts: IPost[];
+}
+
+export const DBContext = React.createContext({
+  documents: {} as IDatabase
 });
 
 export default function DBProvider({
@@ -35,24 +41,42 @@ export default function DBProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [posts, setPosts] = React.useState([]);
+  const [documents, setDocuments] = React.useState({
+    tags: [],
+    posts: [],
+    newPosts: []
+  });
 
   React.useEffect(() => {
     let ignore = false;
-    async function getPosts() {
-      const response = await axios.get(`${SERVERURL}/api/posts`);
+    async function getDocuments() {
+      const postsQuery = axios.get(`${SERVERURL}/api/posts`);
+      const tagsQuery = axios.get(`${SERVERURL}/api/posts/tags`);
+      const newPostsQuery = axios.get(`${SERVERURL}/api/posts/new-posts`);
 
-      if (!ignore) setPosts(response.data.posts);
+      const [postsRes, tagsRes, newPostsRes] = await Promise.all([
+        postsQuery,
+        tagsQuery,
+        newPostsQuery
+      ]);
+
+      if (!ignore) {
+        setDocuments({
+          tags: tagsRes.data.tags,
+          posts: postsRes.data.posts,
+          newPosts: newPostsRes.data.posts
+        });
+      }
     }
 
-    getPosts();
+    getDocuments();
 
     return () => {
       ignore = true;
     };
   }, []);
 
-  const values = React.useMemo(() => ({ posts }), [posts]);
+  const values = React.useMemo(() => ({ documents }), [documents]);
 
   return <DBContext.Provider value={values}>{children}</DBContext.Provider>;
 }
