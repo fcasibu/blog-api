@@ -1,16 +1,6 @@
 import { Link } from 'react-router-dom';
+import { IPost } from '../../context/DBProvider';
 import s from './Posts.module.css';
-
-// TODO: Place this somewhere else
-export interface IPost {
-  tag: string;
-  formattedDate: string;
-  commentCount: number;
-  author: any; // TODO: create type for author
-  title: string;
-  body: string;
-  id: string;
-}
 
 interface ItemProps {
   postDetails: IPost;
