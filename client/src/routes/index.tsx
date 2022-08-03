@@ -4,6 +4,7 @@ import useAuth from '../hooks/useAuth';
 import authRoutes from './auth';
 
 const Home = React.lazy(() => import('../pages/Home'));
+const PostDetail = React.lazy(() => import('../pages/PostDetail'));
 
 function App() {
   return (
@@ -17,7 +18,10 @@ const appRoutes = [
   {
     path: '/',
     element: <App />,
-    children: [{ path: '/', element: <Home /> }]
+    children: [
+      { path: '/', element: <Home /> },
+      { path: '/posts/:postId', element: <PostDetail /> }
+    ]
   }
 ];
 
