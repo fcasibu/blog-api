@@ -31,6 +31,7 @@ const PostSchema = new Schema(
     },
     tag: {
       type: String,
+      required: true,
       minLength: 2,
       maxLength: 7
     },
