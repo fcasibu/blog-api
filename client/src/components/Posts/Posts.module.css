@@ -1,0 +1,74 @@
+.drop-down-container {
+  position: relative;
+}
+
+.drop-down {
+  position: absolute;
+  top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  padding: 1rem;
+  width: 100px;
+  z-index: 1000;
+}
+
+.drop-down__body {
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  max-height: 150px;
+}
+
+.drop-down__body::-webkit-scrollbar {
+  display: none;
+}
+
+.drop-down--left {
+  left: -0.5rem;
+}
+.drop-down--right {
+  right: -0.5rem;
+}
+.drop-down__divider {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.7);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+.drop-down__beak {
+  position: absolute;
+  top: -0.6rem;
+  background-color: white;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  width: 1rem;
+  height: 1rem;
+  transform: rotate(44deg);
+}
+.drop-down__beak--right {
+  right: 1rem;
+}
+
+.drop-down button {
+  background-color: transparent;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.3rem;
+  outline: none;
+  width: 100%;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.drop-down button:hover {
+  background-color: #eee;
+}
