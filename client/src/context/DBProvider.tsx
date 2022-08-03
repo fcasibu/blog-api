@@ -26,14 +26,20 @@ export interface ITags {
   tag: string;
 }
 
-interface IDatabase {
+interface IDocuments {
   posts: IPost[];
   tags: ITags[];
   newPosts: IPost[];
 }
 
-export const DBContext = React.createContext({
-  documents: {} as IDatabase
+interface IDatabase {
+  documents: IDocuments;
+  getFilteredPosts: (tag: string) => Promise<unknown>;
+}
+
+export const DBContext = React.createContext<IDatabase>({
+  documents: {} as IDocuments,
+  getFilteredPosts: async () => Promise<unknown>
 });
 
 export default function DBProvider({
@@ -47,9 +53,18 @@ export default function DBProvider({
     newPosts: []
   });
 
+  const getFilteredPosts = async (tag: string) => {
+    const response = await axios.get(`${SERVERURL}/api/posts?tag=${tag}`);
+
+    setDocuments((prevState) => ({
+      ...prevState,
+      posts: response.data.posts
+    }));
+  };
+
   React.useEffect(() => {
     let ignore = false;
-    async function getDocuments() {
+    const getDocuments = async () => {
       const postsQuery = axios.get(`${SERVERURL}/api/posts`);
       const tagsQuery = axios.get(`${SERVERURL}/api/posts/tags`);
       const newPostsQuery = axios.get(`${SERVERURL}/api/posts/new-posts`);
@@ -67,7 +82,7 @@ export default function DBProvider({
           newPosts: newPostsRes.data.posts
         });
       }
-    }
+    };
 
     getDocuments();
 
@@ -76,7 +91,10 @@ export default function DBProvider({
     };
   }, []);
 
-  const values = React.useMemo(() => ({ documents }), [documents]);
+  const values = React.useMemo(
+    () => ({ documents, getFilteredPosts }),
+    [documents]
+  );
 
   return <DBContext.Provider value={values}>{children}</DBContext.Provider>;
 }
