@@ -35,12 +35,13 @@ export const getAllPublishedPost = catchAsync(async (req, res, next) => {
 
 // TODO: POST request for author's unpublished post
 export const createUserDraftPost = catchAsync(async (req, res, next) => {
-  const { title, body } = req.body;
+  const { title, body, tag } = req.body;
   const author = await User.findById(req.params.userId, '-password').exec();
   const post = await Post.create({
     author,
     title,
-    body
+    body,
+    tag
   });
 
   return sendResponse(res, 201, { post });
@@ -48,12 +49,13 @@ export const createUserDraftPost = catchAsync(async (req, res, next) => {
 
 // TODO: POST request for author's post
 export const createUserPost = catchAsync(async (req, res, next) => {
-  const { title, body } = req.body;
+  const { title, body, tag } = req.body;
   const author = await User.findById(req.params.userId, '-password').exec();
   const post = await Post.create({
     author,
     title,
     body,
+    tag,
     published: true
   });
 
