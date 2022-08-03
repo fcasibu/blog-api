@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import * as React from 'react';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthProvider';
 import Form, { FormControl, Input } from '../../components/Form';
 import useForm from '../../hooks/useForm';
 import image from '../../assets/sign-in.png';
 import s from './Auth.module.css';
 import handleAuthError from '../../utils/handleAuthError';
+import useAuth from '../../hooks/useAuth';
 
 const initialState = {
   email: '',
@@ -14,8 +14,8 @@ const initialState = {
 };
 
 export default function SignIn() {
-  const { signIn, verifyUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { signIn, verifyUser } = useAuth();
   const [isLoading, setIsLoading] = React.useState(false);
   const { formValues, errors, changeHandler, setErrors } =
     useForm(initialState);

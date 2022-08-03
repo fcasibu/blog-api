@@ -22,7 +22,7 @@ const appRoutes = [
 ];
 
 export default function AppRoute() {
-  const user = useAuth();
+  const { user } = useAuth();
 
   const route = user ? [] : authRoutes;
   const elements = useRoutes([...appRoutes, ...route]);
