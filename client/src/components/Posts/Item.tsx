@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { IPost } from '../../context/DBProvider';
 import s from './Posts.module.css';
@@ -21,7 +22,7 @@ export default function Item({ postDetails }: ItemProps) {
           <p>{postDetails.body}</p>
         </div>
         <div className={s['post-info__footer']}>
-          <Link to={`${postDetails.id}`}>Read More</Link>
+          <Link to={`/posts/${postDetails.id}`}>Read More</Link>
           <div>
             <span>{postDetails.commentCount}</span>
           </div>
