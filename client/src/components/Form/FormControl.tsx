@@ -1,6 +1,7 @@
-import React from 'react';
+import * as React from 'react';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
-interface IErrors {
+export interface IErrors {
   param: string;
   msg: string;
 }
@@ -9,7 +10,7 @@ interface FormControlProps {
   children: React.ReactNode;
   id: string;
   label: string;
-  errors?: IErrors[];
+  errors: IErrors[] | [];
 }
 
 export function FormControl({
@@ -18,13 +19,14 @@ export function FormControl({
   label,
   errors = []
 }: FormControlProps) {
+  const [labelRef] = useAutoAnimate<HTMLLabelElement>();
   const message = errors.find((el) => el.param === id)?.msg;
 
   return (
-    <label htmlFor={id}>
+    <label htmlFor={id} ref={labelRef}>
       <p>{label}</p>
       {children}
-      <span>{message}</span>
+      {message && <p>{message}</p>}
     </label>
   );
 }
