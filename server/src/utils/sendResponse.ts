@@ -10,6 +10,7 @@ interface Data {
   comment?: IComment;
   users?: IUser[];
   user?: IUser;
+  tags?: { tag: string }[];
   token?: string;
 }
 
