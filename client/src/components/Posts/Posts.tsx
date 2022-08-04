@@ -73,7 +73,7 @@ export default function Posts({ data, tags, getFilteredPosts }: PostsProps) {
         )}
       </div>
       {data.map((el: IPost) => (
-        <Item postDetails={el} key={el.id} />
+        <Item postDetails={el} key={el._id} />
       ))}
     </div>
   );

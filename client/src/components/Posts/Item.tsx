@@ -22,7 +22,7 @@ export default function Item({ postDetails }: ItemProps) {
           <p>{postDetails.body}</p>
         </div>
         <div className={s['post-info__footer']}>
-          <Link to={`/posts/${postDetails.id}`}>Read More</Link>
+          <Link to={`/posts/${postDetails._id}`}>Read More</Link>
           <div>
             <span>{postDetails.commentCount}</span>
           </div>
