@@ -1,6 +1,13 @@
+import * as React from 'react';
+import { IPost } from '../../context/DBProvider';
 import s from './Hero.module.css';
 
-export default function Hero() {
+interface HeroProps {
+  newPosts: IPost[];
+}
+
+function Hero({ newPosts }: HeroProps) {
+  console.log(newPosts);
   return (
     <div className={s.hero}>
       <h1>Read engaging blog posts while you brew</h1>
@@ -13,3 +20,5 @@ export default function Hero() {
     </div>
   );
 }
+
+export default React.memo(Hero);
