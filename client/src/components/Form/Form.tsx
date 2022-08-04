@@ -10,7 +10,7 @@ export default function Form({ children, onSubmit, isLoading }: FormProps) {
   return (
     <form onSubmit={onSubmit}>
       {children}
-      <button type="submit">{isLoading ? 'Loading...' : 'Submit'}</button>
+      <button type="submit" disabled={isLoading}>{isLoading ? 'Loading...' : 'Submit'}</button>
     </form>
   );
 }
