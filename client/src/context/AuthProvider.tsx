@@ -12,6 +12,7 @@ interface SignUpCredentials {
 
 interface IAuth {
   user: IUser | null;
+  // TODO: Better typing on the return value
   signIn: (email: string, password: string) => Promise<any>;
   signUp: (data: SignUpCredentials) => Promise<any>;
   verifyUser: () => Promise<any>;
@@ -26,11 +27,7 @@ export const AuthContext = React.createContext<IAuth>({
   signOut: () => undefined
 });
 
-export default function AuthProvider({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = React.useState(null);
 
   const verifyUser = async () => {
@@ -65,10 +62,9 @@ export default function AuthProvider({
     verifyUser();
   }, []);
 
-  const values = React.useMemo(
-    () => ({ user, signIn, signUp, signOut, verifyUser }),
-    [user]
-  );
+  const values = React.useMemo(() =>
+    ({ user, signIn, signUp, signOut, verifyUser }),
+    [user]);
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 }
