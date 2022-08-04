@@ -5,7 +5,7 @@ import { SERVERURL } from '../config';
 export interface IUser {
   username: string;
   email: string;
-  id: string;
+  _id: string;
   __v: number;
 }
 
@@ -24,7 +24,7 @@ export interface IPost {
   author: IUser;
   title: string;
   body: string;
-  id: string;
+  _id: string;
   published: boolean;
   createdAt: Date;
   comments: IComment[];
@@ -53,7 +53,7 @@ export const DBContext = React.createContext<IDatabase>({
   documents: {} as IDocuments,
   getFilteredPosts: async () => undefined,
   getPost: async () => undefined,
-  createComment: async () => undefined,
+  createComment: async () => undefined
 });
 
 export default function DBProvider({
@@ -82,16 +82,20 @@ export default function DBProvider({
     setDocuments((prevState) => ({
       ...prevState,
       post: { ...response.data.post, comments: response.data.comments }
-    }))
-  }
+    }));
+  };
 
   const createComment = async (text: string, postId: string) => {
-    return axios.post(`${SERVERURL}/api/posts/${postId}`, { text }, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+    return axios.post(
+      `${SERVERURL}/api/posts/${postId}`,
+      { text },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
       }
-    })
-  }
+    );
+  };
 
   React.useEffect(() => {
     let ignore = false;
@@ -111,7 +115,7 @@ export default function DBProvider({
           ...prevState,
           tags: tagsRes.data.tags,
           posts: postsRes.data.posts,
-          newPosts: newPostsRes.data.posts,
+          newPosts: newPostsRes.data.posts
         }));
       }
     };
