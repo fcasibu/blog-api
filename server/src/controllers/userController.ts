@@ -4,31 +4,51 @@ import Comment from '../model/comment';
 
 import catchAsync from '../utils/catchAsync';
 import sendResponse from '../utils/sendResponse';
+import { paginate } from '../utils/paginate';
 
 // TODO: Refactor this
 
 // TODO: GET request for all author's post
 export const getAllUserPost = catchAsync(async (req, res, next) => {
-  const posts = await Post.find({ author: req.params.userId }).exec();
+  let query = { author: req.params.userId };
+  const skip = paginate(Number(req.query.page ?? 1));
+  const posts = await Post.find(query)
+    .skip(skip)
+    .limit(10)
+    .sort('-createdAt')
+    .populate({ path: 'author', select: '-password' })
+    .populate('commentCount')
+    .exec();
+
   return sendResponse(res, 200, { posts });
 });
 
 // TODO: GET request for all author's unpublished post
 export const getAllUnpublishedPost = catchAsync(async (req, res, next) => {
-  const posts = await Post.find({
-    author: req.params.userId,
-    published: { $eq: false }
-  }).exec();
+  let query = { author: req.params.userId, published: { $eq: false } };
+  const skip = paginate(Number(req.query.page ?? 1));
+  const posts = await Post.find(query)
+    .skip(skip)
+    .limit(10)
+    .sort('-createdAt')
+    .populate({ path: 'author', select: '-password' })
+    .populate('commentCount')
+    .exec();
 
   return sendResponse(res, 200, { posts });
 });
 
 // TODO: GET request for all author's published post
 export const getAllPublishedPost = catchAsync(async (req, res, next) => {
-  const posts = await Post.find({
-    author: req.params.userId,
-    published: { $eq: true }
-  }).exec();
+  let query = { author: req.params.userId, published: { $eq: true } };
+  const skip = paginate(Number(req.query.page ?? 1));
+  const posts = await Post.find(query)
+    .skip(skip)
+    .limit(10)
+    .sort('-createdAt')
+    .populate({ path: 'author', select: '-password' })
+    .populate('commentCount')
+    .exec();
 
   return sendResponse(res, 200, { posts });
 });
