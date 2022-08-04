@@ -1,15 +1,19 @@
 import * as React from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useParams } from 'react-router-dom';
+import PostDetailComment from '../../components/PostDetailComment';
 import useDB from '../../hooks/useDB';
 import PostBody from './PostBody';
 import PostHeader from './PostHeader';
 
 export default function PostDetail() {
   const { postId } = useParams();
-  const { documents } = useDB();
+  const { documents: { post }, getPost } = useDB();
   const [parentRef] = useAutoAnimate<HTMLDivElement>();
-  const post = documents.posts.find((el) => el.id === postId);
+
+  React.useEffect(() => {
+    getPost(postId as string);
+  }, [])
 
   return (
     <div ref={parentRef}>
@@ -22,6 +26,7 @@ export default function PostDetail() {
             title={post.title}
           />
           <PostBody body={post.body} />
+          <PostDetailComment comments={post.comments} postId={postId as string} />
         </>
       )}
     </div>
