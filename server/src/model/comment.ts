@@ -30,13 +30,15 @@ const CommentSchema = new Schema({
     type: Date,
     default: Date.now
   }
-});
+},
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
 
-CommentSchema.virtual('formattedDate').get(function () {
+CommentSchema.virtual('formattedDate').get(function() {
   return DateTime.fromJSDate(this.createdAt).toLocaleString(DateTime.DATE_MED);
 });
 
-CommentSchema.virtual('relativeTime').get(function () {
+CommentSchema.virtual('relativeTime').get(function() {
   return DateTime.fromJSDate(this.createdAt).toRelativeCalendar();
 });
 
