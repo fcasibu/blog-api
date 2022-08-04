@@ -28,7 +28,10 @@ export const getAllPost = catchAsync(async (req, res, next) => {
 // TODO: GET reuest for post
 export const getPost = catchAsync(async (req, res, next) => {
   const postQuery = Post.findById(req.params.postId).exec();
-  const commentQuery = Comment.find({ post: req.params.postId }).exec();
+  const commentQuery = Comment.find({ post: req.params.postId })
+    .select('-post')
+    .populate('user')
+    .exec();
   const [post, comments] = await Promise.all([postQuery, commentQuery]);
 
   if (!post) return next(new Error('Post does not exist'));
