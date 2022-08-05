@@ -44,8 +44,8 @@ interface IDocuments {
 
 interface IDatabase {
   documents: IDocuments;
-  getFilteredPosts: (tag: string) => Promise<unknown>;
-  getPost: (postId: string) => Promise<unknown>;
+  getFilteredPosts: (tag: string) => Promise<any>;
+  getPost: (postId: string) => Promise<any>;
   createComment: (body: string, postId: string) => Promise<any>;
 }
 
@@ -78,11 +78,15 @@ export default function DBProvider({
   };
 
   const getPost = async (postId: string) => {
-    const response = await axios.get(`${SERVERURL}/api/posts/${postId}`);
-    setDocuments((prevState) => ({
-      ...prevState,
-      post: { ...response.data.post, comments: response.data.comments }
-    }));
+    try {
+      const response = await axios.get(`${SERVERURL}/api/posts/${postId}`);
+      setDocuments((prevState) => ({
+        ...prevState,
+        post: { ...response.data.post, comments: response.data.comments }
+      }));
+    } catch (err) {
+      window.open(window.location.origin, "_self")
+    }
   };
 
   const createComment = async (text: string, postId: string) => {
