@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { Link } from 'react-router-dom';
+import parse from 'html-react-parser';
 import { IPost } from '../../context/DBProvider';
 import s from './Posts.module.css';
 
@@ -19,7 +19,7 @@ export default function Item({ postDetails }: ItemProps) {
         </div>
         <div className={s['post-info__body']}>
           <h3>{postDetails.title}</h3>
-          <p>{postDetails.body}</p>
+          <div>{parse(postDetails.body)}</div>
         </div>
         <div className={s['post-info__footer']}>
           <Link to={`/posts/${postDetails._id}`}>Read More</Link>
