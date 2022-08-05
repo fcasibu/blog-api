@@ -1,3 +1,5 @@
+import parse from 'html-react-parser';
+
 interface PostBodyProps {
   body: string;
 }
@@ -5,7 +7,7 @@ interface PostBodyProps {
 export default function PostBody({ body }: PostBodyProps) {
   return (
     <div>
-      <p>{body}</p>
+      <div>{parse(body)}</div>
     </div>
   );
 }
