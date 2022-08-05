@@ -4,6 +4,13 @@ import { SERVERURL } from '../config';
 import useAuth from '../hooks/useAuth';
 import { IPost } from './DBProvider';
 
+interface EditPostData {
+  title: string;
+  tag: string;
+  body: string;
+  published: string;
+}
+
 interface ICMSDocuments {
   posts: IPost[];
   post: IPost | null;
@@ -11,10 +18,14 @@ interface ICMSDocuments {
 
 interface ICMS {
   documents: ICMSDocuments;
+  getPost: (postId: string) => Promise<void>;
+  editPost: (data: EditPostData, postId: string) => Promise<any>;
 }
 
 export const CMSContext = React.createContext<ICMS>({
-  documents: {} as ICMSDocuments
+  documents: {} as ICMSDocuments,
+  getPost: async () => undefined,
+  editPost: async () => undefined
 });
 
 export default function CMSProvider({
@@ -27,6 +38,36 @@ export default function CMSProvider({
     posts: [],
     post: null
   });
+
+  const getPost = async (postId: string) => {
+    const response = await axios.get(
+      `${SERVERURL}/api/users/${user?._id}/posts/${postId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    );
+    setDocuments((prevState) => ({
+      ...prevState,
+      post: { ...response.data.post, comments: response.data.comments }
+    }));
+  };
+
+  const editPost = async (data: EditPostData, postId: string) => {
+    return axios.put(
+      `${SERVERURL}/api/users/${user?._id}/posts/${postId}`,
+      {
+        ...data,
+        createdAt: Date.now()
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    );
+  };
 
   React.useEffect(() => {
     let ignore = false;
@@ -54,8 +95,11 @@ export default function CMSProvider({
     return () => {
       ignore = true;
     };
-  }, [user]);
+  }, [user, documents.post]);
 
-  const values = React.useMemo(() => ({ documents }), [documents]);
+  const values = React.useMemo(
+    () => ({ documents, getPost, editPost }),
+    [documents]
+  );
   return <CMSContext.Provider value={values}>{children}</CMSContext.Provider>;
 }
