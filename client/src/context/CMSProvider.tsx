@@ -4,11 +4,11 @@ import { SERVERURL } from '../config';
 import useAuth from '../hooks/useAuth';
 import { IPost } from './DBProvider';
 
-interface EditPostData {
+interface PostData {
   title: string;
   tag: string;
   body: string;
-  published: string;
+  published?: string;
 }
 
 interface ICMSDocuments {
@@ -19,13 +19,15 @@ interface ICMSDocuments {
 interface ICMS {
   documents: ICMSDocuments;
   getPost: (postId: string) => Promise<void>;
-  editPost: (data: EditPostData, postId: string) => Promise<any>;
+  editPost: (data: PostData, postId: string) => Promise<any>;
+  createPost: (data: PostData, type: string) => Promise<any>;
 }
 
 export const CMSContext = React.createContext<ICMS>({
   documents: {} as ICMSDocuments,
   getPost: async () => undefined,
-  editPost: async () => undefined
+  editPost: async () => undefined,
+  createPost: async () => undefined
 });
 
 export default function CMSProvider({
@@ -38,6 +40,14 @@ export default function CMSProvider({
     posts: [],
     post: null
   });
+
+  const createPost = async (data: PostData, type: string) => {
+    return axios.post(`${SERVERURL}/api/users/${user?._id}/posts/${type}`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+  };
 
   const getPost = async (postId: string) => {
     const response = await axios.get(
@@ -54,7 +64,7 @@ export default function CMSProvider({
     }));
   };
 
-  const editPost = async (data: EditPostData, postId: string) => {
+  const editPost = async (data: PostData, postId: string) => {
     return axios.put(
       `${SERVERURL}/api/users/${user?._id}/posts/${postId}`,
       {
@@ -98,7 +108,7 @@ export default function CMSProvider({
   }, [user, documents.post]);
 
   const values = React.useMemo(
-    () => ({ documents, getPost, editPost }),
+    () => ({ documents, getPost, editPost, createPost }),
     [documents]
   );
   return <CMSContext.Provider value={values}>{children}</CMSContext.Provider>;
