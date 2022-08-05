@@ -1,8 +1,9 @@
-import React from 'react';
+import * as React from 'react';
+import { IErrors } from '../components/Form';
 
 export default function useForm<T>(initialValue: T) {
-  const [formValues, setFormValues] = React.useState<T>(initialValue);
-  const [errors, setErrors] = React.useState([]);
+  const [formValues, setFormValues] = React.useState(initialValue);
+  const [errors, setErrors] = React.useState<IErrors[] | []>([]);
 
   const changeHandler = (e: React.FormEvent) => {
     const { name, value } = e.target as HTMLInputElement;
@@ -13,5 +14,5 @@ export default function useForm<T>(initialValue: T) {
     }));
   };
 
-  return { formValues, changeHandler, errors, setErrors };
+  return { formValues, errors, changeHandler, setErrors, setFormValues };
 }
