@@ -5,10 +5,14 @@ import useCMS from '../../hooks/useCMS';
 
 interface PostCardProps {
   post: IPost;
+  deletePost: (postId: string) => Promise<void>;
 }
 
-function PostCard({ post }: PostCardProps) {
+function PostCard({ post, deletePost }: PostCardProps) {
   const navigate = useNavigate();
+  const deleteHandler = async () => {
+    await deletePost(post._id);
+  };
   return (
     <div>
       <h4>{post.title}</h4>
@@ -33,7 +37,9 @@ function PostCard({ post }: PostCardProps) {
         <button type="button" onClick={() => navigate(`${post._id}/edit`)}>
           Edit Post
         </button>
-        <button type="button">Delete Post</button>
+        <button type="button" onClick={deleteHandler}>
+          Delete Post
+        </button>
       </div>
     </div>
   );
@@ -41,24 +47,25 @@ function PostCard({ post }: PostCardProps) {
 
 interface CardListProps {
   posts: IPost[];
+  deletePost: (postId: string) => Promise<void>;
 }
 
-function CardList({ posts }: CardListProps) {
+function CardList({ posts, deletePost }: CardListProps) {
   const [parentRef] = useAutoAnimate<HTMLDivElement>();
   return (
     <div ref={parentRef}>
       {posts.map((post) => (
-        <PostCard post={post} key={post._id} />
+        <PostCard post={post} key={post._id} deletePost={deletePost} />
       ))}
     </div>
   );
 }
 
 export default function AllPosts() {
-  const { documents } = useCMS();
+  const { documents, deletePost } = useCMS();
   return (
     <div>
-      <CardList posts={documents.posts} />
+      <CardList posts={documents.posts} deletePost={deletePost} />
     </div>
   );
 }
