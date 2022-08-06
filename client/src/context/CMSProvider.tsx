@@ -21,14 +21,22 @@ interface ICMS {
   getPost: (postId: string) => Promise<void>;
   editPost: (data: PostData, postId: string) => Promise<any>;
   createPost: (data: PostData, type: string) => Promise<any>;
+  deletePost: (postId: string) => Promise<void>;
 }
 
 export const CMSContext = React.createContext<ICMS>({
   documents: {} as ICMSDocuments,
   getPost: async () => undefined,
   editPost: async () => undefined,
-  createPost: async () => undefined
+  createPost: async () => undefined,
+  deletePost: async () => undefined
 });
+
+const headers = {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  }
+};
 
 export default function CMSProvider({
   children
@@ -42,25 +50,36 @@ export default function CMSProvider({
   });
 
   const createPost = async (data: PostData, type: string) => {
-    return axios.post(`${SERVERURL}/api/users/${user?._id}/posts/${type}`, data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    return axios.post(
+      `${SERVERURL}/api/users/${user?._id}/posts/${type}`,
+      data,
+      headers
+    );
   };
 
   const getPost = async (postId: string) => {
     const response = await axios.get(
       `${SERVERURL}/api/users/${user?._id}/posts/${postId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      }
+      headers
     );
     setDocuments((prevState) => ({
       ...prevState,
       post: { ...response.data.post, comments: response.data.comments }
+    }));
+  };
+
+  const deletePost = async (postId: string) => {
+    await axios.delete(
+      `${SERVERURL}/api/users/${user?._id}/posts/${postId}`,
+      headers
+    );
+    const response = await axios.get(
+      `${SERVERURL}/api/users/${user?._id}/posts`,
+      headers
+    );
+    setDocuments((prevState) => ({
+      ...prevState,
+      posts: response.data.posts
     }));
   };
 
@@ -71,11 +90,7 @@ export default function CMSProvider({
         ...data,
         createdAt: Date.now()
       },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      }
+      headers
     );
   };
 
@@ -86,11 +101,7 @@ export default function CMSProvider({
       const getDocuments = async () => {
         const response = await axios.get(
           `${SERVERURL}/api/users/${user._id}/posts`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-          }
+          headers
         );
         if (!ignore)
           setDocuments((prevState) => ({
@@ -108,7 +119,7 @@ export default function CMSProvider({
   }, [user, documents.post]);
 
   const values = React.useMemo(
-    () => ({ documents, getPost, editPost, createPost }),
+    () => ({ documents, getPost, editPost, createPost, deletePost }),
     [documents]
   );
   return <CMSContext.Provider value={values}>{children}</CMSContext.Provider>;
