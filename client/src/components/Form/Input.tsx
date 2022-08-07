@@ -4,8 +4,8 @@ interface InputProps {
   type: string;
   id: string;
   name: string;
-  value: string;
-  onChange(e: React.FormEvent): void;
+  value?: string;
+  onChange(e: React.ChangeEvent<HTMLInputElement>): void;
 }
 
 export function Input({ type, id, name, value, onChange }: InputProps) {

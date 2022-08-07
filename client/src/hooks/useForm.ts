@@ -5,12 +5,12 @@ export default function useForm<T>(initialValue: T) {
   const [formValues, setFormValues] = React.useState(initialValue);
   const [errors, setErrors] = React.useState<IErrors[] | []>([]);
 
-  const changeHandler = (e: React.FormEvent) => {
-    const { name, value } = e.target as HTMLInputElement;
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, files } = e.target;
 
     setFormValues((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: name === 'image' ? files?.[0] : value
     }));
   };
 
