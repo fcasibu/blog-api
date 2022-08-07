@@ -23,6 +23,7 @@ export interface IPost {
   commentCount: number;
   author: IUser;
   title: string;
+  image: string;
   body: string;
   _id: string;
   published: boolean;
@@ -85,7 +86,7 @@ export default function DBProvider({
         post: { ...response.data.post, comments: response.data.comments }
       }));
     } catch (err) {
-      window.open(window.location.origin, "_self")
+      window.open(window.location.origin, '_self');
     }
   };
 

@@ -6,6 +6,7 @@ export interface IPost extends Document {
   author: Types.ObjectId;
   title: string;
   body: string;
+  image: string;
   tag: string;
   published: boolean;
   createdAt: Date;
@@ -24,7 +25,7 @@ const PostSchema = new Schema(
       minLength: 5
     },
     image: {
-      type: String,
+      type: String
     },
     body: {
       type: String,
@@ -50,7 +51,7 @@ const PostSchema = new Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-PostSchema.virtual('formattedDate').get(function() {
+PostSchema.virtual('formattedDate').get(function () {
   return DateTime.fromJSDate(this.createdAt).toLocaleString(DateTime.DATE_MED);
 });
 
