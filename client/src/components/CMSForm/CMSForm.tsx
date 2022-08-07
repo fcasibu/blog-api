@@ -20,7 +20,7 @@ interface CMSFormProps {
   submitHandler: (e: React.FormEvent) => void;
   isLoading: boolean;
   errors: IErrors[];
-  changeHandler: (e: React.FormEvent) => void;
+  changeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   editorValue: string;
   setEditorValue: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -54,7 +54,9 @@ export default function CMSForm({
           onChange={changeHandler}
         />
       </FormControl>
-
+      <FormControl id="image" label="Post Image" errors={errors}>
+        <Input type="file" name="image" id="image" onChange={changeHandler} />
+      </FormControl>
       <FormControl id="body" label="Post Body" errors={errors}>
         <Editor
           apiKey={TINYMCE_KEY}
@@ -64,11 +66,11 @@ export default function CMSForm({
           id="body"
         />
       </FormControl>
-      <button type="submit" name="draft" value="false">
-        Save as Draft
+      <button type="submit" name="draft" value="false" disabled={isLoading}>
+        {isLoading ? 'Loading...' : 'Save as Draft'}
       </button>
-      <button type="submit" name="publish" value="true">
-        Publish Post
+      <button type="submit" name="publish" value="true" disabled={isLoading}>
+        {isLoading ? 'Loading...' : 'Publish Post'}
       </button>
     </Form>
   );
