@@ -8,12 +8,15 @@ import PostHeader from './PostHeader';
 
 export default function PostDetail() {
   const { postId } = useParams();
-  const { documents: { post }, getPost } = useDB();
+  const {
+    documents: { post },
+    getPost
+  } = useDB();
   const [parentRef] = useAutoAnimate<HTMLDivElement>();
 
   React.useEffect(() => {
     getPost(postId as string);
-  }, [])
+  }, []);
 
   return (
     <div ref={parentRef}>
@@ -24,9 +27,13 @@ export default function PostDetail() {
             tag={post.tag}
             date={post.formattedDate}
             title={post.title}
+            image={post.image}
           />
           <PostBody body={post.body} />
-          <PostDetailComment comments={post.comments} postId={postId as string} />
+          <PostDetailComment
+            comments={post.comments}
+            postId={postId as string}
+          />
         </>
       )}
     </div>

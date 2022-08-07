@@ -3,13 +3,15 @@ interface PostHeaderProps {
   tag: string;
   date: string;
   title: string;
+  image: string;
 }
 
 export default function PostHeader({
   author,
   tag,
   date,
-  title
+  title,
+  image
 }: PostHeaderProps) {
   return (
     <div>
@@ -19,7 +21,9 @@ export default function PostHeader({
         <span>{author}</span>
       </div>
       <h1>{title}</h1>
-      <div>Image Container</div>
+      <div>
+        <img src={image} alt="" />
+      </div>
     </div>
   );
 }

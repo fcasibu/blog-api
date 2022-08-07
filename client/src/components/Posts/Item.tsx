@@ -10,10 +10,12 @@ interface ItemProps {
 export default function Item({ postDetails }: ItemProps) {
   return (
     <div>
-      <div className={s['image-container']}>Hello World!</div>
+      <div className={s['image-container']}>
+        <img src={postDetails.image} alt="" />
+      </div>
       <div className={s['post-info']}>
         <div className={s['post-info__header']}>
-          <span>{postDetails?.tag}</span>
+          <span>{postDetails.tag}</span>
           <span>{postDetails.formattedDate}</span>
           <span>{postDetails.author.username}</span>
         </div>
