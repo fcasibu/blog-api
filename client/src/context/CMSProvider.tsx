@@ -4,12 +4,13 @@ import { SERVERURL } from '../config';
 import useAuth from '../hooks/useAuth';
 import { IPost } from './DBProvider';
 
-interface PostData {
+/* interface PostData {
   title: string;
   tag: string;
   body: string;
   published?: string;
-}
+  image?: any;
+} */
 
 interface ICMSDocuments {
   posts: IPost[];
@@ -19,8 +20,8 @@ interface ICMSDocuments {
 interface ICMS {
   documents: ICMSDocuments;
   getPost: (postId: string) => Promise<void>;
-  editPost: (data: PostData, postId: string) => Promise<any>;
-  createPost: (data: PostData, type: string) => Promise<any>;
+  editPost: (data: FormData, postId: string) => Promise<any>;
+  createPost: (data: FormData, type: string) => Promise<any>;
   deletePost: (postId: string) => Promise<void>;
 }
 
@@ -49,7 +50,7 @@ export default function CMSProvider({
     post: null
   });
 
-  const createPost = async (data: PostData, type: string) => {
+  const createPost = async (data: FormData, type: string) => {
     return axios.post(
       `${SERVERURL}/api/users/${user?._id}/posts/${type}`,
       data,
@@ -83,7 +84,7 @@ export default function CMSProvider({
     }));
   };
 
-  const editPost = async (data: PostData, postId: string) => {
+  const editPost = async (data: FormData, postId: string) => {
     return axios.put(
       `${SERVERURL}/api/users/${user?._id}/posts/${postId}`,
       {
