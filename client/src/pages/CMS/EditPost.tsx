@@ -10,7 +10,8 @@ import CMSForm from '../../components/CMSForm';
 
 const formInitialValues = {
   title: '',
-  tag: ''
+  tag: '',
+  image: ''
 };
 
 export default function EditPost() {
@@ -31,17 +32,14 @@ export default function EditPost() {
       e.preventDefault();
       const { submitter } = e.nativeEvent as SubmitEvent;
       const { value } = submitter as HTMLButtonElement;
+      const data = new FormData();
+      data.append('body', editorValue);
+      data.append('title', formValues.title);
+      data.append('tag', formValues.tag);
+      data.append('published', value);
+      data.append('image', formValues.image);
       setIsLoading(true);
-      const response = await editPost(
-        {
-          body: editorValue,
-          title: formValues.title,
-          tag: formValues.tag,
-          published: value
-        },
-        postId as string
-      );
-
+      const response = await editPost(data, postId as string);
       setIsLoading(false);
       if (response.data.errors) return setErrors(response.data.errors);
 
@@ -60,7 +58,8 @@ export default function EditPost() {
       setEditorValue(post.body);
       setFormValues({
         title: post.title,
-        tag: post.tag
+        tag: post.tag,
+        image: ''
       });
     }
   }, [post]);

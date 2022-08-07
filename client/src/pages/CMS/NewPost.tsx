@@ -7,7 +7,8 @@ import CMSForm from '../../components/CMSForm';
 
 const formInitialValues = {
   title: '',
-  tag: ''
+  tag: '',
+  image: ''
 };
 
 export default function EditPost() {
@@ -25,15 +26,13 @@ export default function EditPost() {
       e.preventDefault();
       const { submitter } = e.nativeEvent as SubmitEvent;
       const { name } = submitter as HTMLButtonElement;
+      const data = new FormData();
+      data.append('image', formValues.image);
+      data.append('body', editorValue);
+      data.append('title', formValues.title);
+      data.append('tag', formValues.tag);
       setIsLoading(true);
-      const response = await createPost(
-        {
-          body: editorValue,
-          title: formValues.title,
-          tag: formValues.tag
-        },
-        name
-      );
+      const response = await createPost(data, name);
 
       setIsLoading(false);
       if (response.data.errors) return setErrors(response.data.errors);
