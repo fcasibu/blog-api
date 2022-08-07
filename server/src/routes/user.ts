@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import { verify } from '../controllers/authController';
 import {
   createUserDraftPost,
@@ -17,6 +18,11 @@ import {
 import isValid from '../middlewares/isValid';
 import { validateComment, validatePost } from '../utils/validators';
 
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage
+});
+
 const router = express.Router();
 
 router.use(verify);
@@ -26,17 +32,17 @@ router.route('/:userId/posts').get(getAllUserPost);
 router
   .route('/:userId/posts/draft')
   .get(getAllUnpublishedPost)
-  .post(validatePost(), isValid, createUserDraftPost);
+  .post(upload.single('image'), validatePost(), isValid, createUserDraftPost);
 
 router
   .route('/:userId/posts/publish')
   .get(getAllPublishedPost)
-  .post(validatePost(), isValid, createUserPost);
+  .post(upload.single('image'), validatePost(), isValid, createUserPost);
 
 router
   .route('/:userId/posts/:postId')
   .get(getUserPost)
-  .put(validatePost(), isValid, updateUserPost)
+  .put(upload.single('image'), validatePost(), isValid, updateUserPost)
   .delete(deleteUserPost);
 
 router.route('/:userId/posts/:postId/comments').get(getAllComment);

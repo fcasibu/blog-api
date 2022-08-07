@@ -1,3 +1,7 @@
+import { v2 as cloudinary } from 'cloudinary';
+import path from 'path';
+import DataURIParser from 'datauri/parser';
+
 import User from '../model/user';
 import Post from '../model/post';
 import Comment from '../model/comment';
@@ -6,8 +10,20 @@ import catchAsync from '../utils/catchAsync';
 import sendResponse from '../utils/sendResponse';
 import { paginate } from '../utils/paginate';
 
-// TODO: Refactor this
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
+const parser = new DataURIParser();
+
+const formatBufferTo64 = (file: any) =>
+  parser.format(path.extname(file.originalname).toString(), file.buffer);
+
+const cloudinaryUpload = (file: any) => cloudinary.uploader.upload(file);
+
+// TODO: Refactor this
 // TODO: GET request for all author's post
 export const getAllUserPost = catchAsync(async (req, res, next) => {
   let query = { author: req.params.userId };
@@ -56,12 +72,15 @@ export const getAllPublishedPost = catchAsync(async (req, res, next) => {
 // TODO: POST request for author's unpublished post
 export const createUserDraftPost = catchAsync(async (req, res, next) => {
   const { title, body, tag } = req.body;
+  const image = formatBufferTo64(req.file);
+  const uploadResult = await cloudinaryUpload(image.content);
   const author = await User.findById(req.params.userId, '-password').exec();
   const post = await Post.create({
     author,
     title,
     body,
-    tag
+    tag,
+    image: uploadResult.secure_url
   });
 
   return sendResponse(res, 201, { post });
@@ -70,12 +89,15 @@ export const createUserDraftPost = catchAsync(async (req, res, next) => {
 // TODO: POST request for author's post
 export const createUserPost = catchAsync(async (req, res, next) => {
   const { title, body, tag } = req.body;
+  const image = formatBufferTo64(req.file);
+  const uploadResult = await cloudinaryUpload(image.content);
   const author = await User.findById(req.params.userId, '-password').exec();
   const post = await Post.create({
     author,
     title,
     body,
     tag,
+    image: uploadResult.secure_url,
     published: true
   });
 
@@ -105,9 +127,18 @@ export const deleteUserPost = catchAsync(async (req, res, next) => {
 
 // TODO: PUT request for author's post
 export const updateUserPost = catchAsync(async (req, res, next) => {
-  const post = await Post.findByIdAndUpdate(req.params.postId, req.body, {
-    new: true
-  }).exec();
+  const image = formatBufferTo64(req.file);
+  const uploadResult = await cloudinaryUpload(image.content);
+  const post = await Post.findByIdAndUpdate(
+    req.params.postId,
+    {
+      ...req.body,
+      image: uploadResult.secure_url
+    },
+    {
+      new: true
+    }
+  ).exec();
 
   if (!post) {
     return next(new Error('Post does not exist'));
