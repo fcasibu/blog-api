@@ -23,6 +23,9 @@ const PostSchema = new Schema(
       required: true,
       minLength: 5
     },
+    image: {
+      type: String,
+    },
     body: {
       type: String,
       required: true,
@@ -47,7 +50,7 @@ const PostSchema = new Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-PostSchema.virtual('formattedDate').get(function () {
+PostSchema.virtual('formattedDate').get(function() {
   return DateTime.fromJSDate(this.createdAt).toLocaleString(DateTime.DATE_MED);
 });
 
