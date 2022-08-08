@@ -87,10 +87,7 @@ export default function CMSProvider({
   const editPost = async (data: FormData, postId: string) => {
     return axios.put(
       `${SERVERURL}/api/users/${user?._id}/posts/${postId}`,
-      {
-        ...data,
-        createdAt: Date.now()
-      },
+      data,
       headers
     );
   };
