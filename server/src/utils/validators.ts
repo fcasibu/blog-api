@@ -1,7 +1,7 @@
 import { check } from 'express-validator';
 import User from '../model/user';
 
-export const validateSignIn = function() {
+export const validateSignIn = function () {
   return [
     check('email').isEmail().withMessage('You have entered an invalid email'),
     check('password')
@@ -12,7 +12,7 @@ export const validateSignIn = function() {
   ];
 };
 
-export const validateSignUp = function() {
+export const validateSignUp = function () {
   return [
     check('username')
       .isLength({ min: 3, max: 15 })
@@ -41,13 +41,13 @@ export const validateSignUp = function() {
   ];
 };
 
-export const validatePost = function() {
+export const validatePost = function () {
   return [
     check('title')
       .matches(/^[A-Za-z0-9\s]+$/)
       .withMessage('Title must be alphanumeric')
-      .isLength({ min: 5 })
-      .withMessage('Title must have a minimum length of 5 characters'),
+      .isLength({ min: 5, max: 65 })
+      .withMessage('Title must have a min and max length of 5-65 characters'),
     check('body')
       .isLength({ min: 55, max: 5000 })
       .withMessage('Body must have a min and max length of 55-5000 characters'),
@@ -59,14 +59,12 @@ export const validatePost = function() {
   ];
 };
 
-export const validateComment = function() {
+export const validateComment = function () {
   return [
     check('text')
       .matches(/^[A-Za-z0-9 _.,!"'&/$]+$/)
       .withMessage('Comment must not contain invalid characters')
       .isLength({ min: 5, max: 500 })
-      .withMessage(
-        'Comment must have a min and max length of 5-500 characters'
-      )
+      .withMessage('Comment must have a min and max length of 5-500 characters')
   ];
 };

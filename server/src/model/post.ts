@@ -22,7 +22,8 @@ const PostSchema = new Schema(
     title: {
       type: String,
       required: true,
-      minLength: 5
+      minLength: 5,
+      maxLength: 65,
     },
     image: {
       type: String
