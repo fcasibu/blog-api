@@ -127,13 +127,14 @@ export const deleteUserPost = catchAsync(async (req, res, next) => {
 
 // TODO: PUT request for author's post
 export const updateUserPost = catchAsync(async (req, res, next) => {
-  const image = formatBufferTo64(req.file);
-  const uploadResult = await cloudinaryUpload(image.content);
+  const image = req.file && formatBufferTo64(req.file);
+  const uploadResult = image && await cloudinaryUpload(image.content);
   const post = await Post.findByIdAndUpdate(
     req.params.postId,
     {
       ...req.body,
-      image: uploadResult.secure_url
+      image: uploadResult?.secure_url,
+      createdAt: Date.now()
     },
     {
       new: true
