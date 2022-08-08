@@ -78,7 +78,7 @@ export default function EditPost() {
       <div ref={commentRef}>
         <h4>Comments</h4>
         {post?.comments.length ? (
-          <CommentList comments={post.comments} isAuthor />
+          <CommentList comments={post.comments} isAuthor postId={postId}/>
         ) : (
           <p>There are no comments on this blog post</p>
         )}
