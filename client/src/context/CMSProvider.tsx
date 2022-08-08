@@ -23,6 +23,7 @@ interface ICMS {
   editPost: (data: FormData, postId: string) => Promise<any>;
   createPost: (data: FormData, type: string) => Promise<any>;
   deletePost: (postId: string) => Promise<void>;
+  deleteComment: (postId: string, commentId: string) => Promise<void>;
 }
 
 export const CMSContext = React.createContext<ICMS>({
@@ -30,7 +31,8 @@ export const CMSContext = React.createContext<ICMS>({
   getPost: async () => undefined,
   editPost: async () => undefined,
   createPost: async () => undefined,
-  deletePost: async () => undefined
+  deletePost: async () => undefined,
+  deleteComment: async () => undefined
 });
 
 const headers = {
@@ -92,6 +94,14 @@ export default function CMSProvider({
     );
   };
 
+  const deleteComment = async (postId: string, commentId: string) => {
+    await axios.delete(
+      `${SERVERURL}/api/users/${user?._id}/posts/${postId}/comments/${commentId}`,
+      headers
+    );
+    getPost(postId);
+  };
+
   React.useEffect(() => {
     let ignore = false;
 
@@ -117,7 +127,14 @@ export default function CMSProvider({
   }, [user, documents.post]);
 
   const values = React.useMemo(
-    () => ({ documents, getPost, editPost, createPost, deletePost }),
+    () => ({
+      documents,
+      getPost,
+      editPost,
+      createPost,
+      deletePost,
+      deleteComment
+    }),
     [documents]
   );
   return <CMSContext.Provider value={values}>{children}</CMSContext.Provider>;
