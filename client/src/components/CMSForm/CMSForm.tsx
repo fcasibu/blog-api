@@ -19,6 +19,7 @@ interface CMSFormProps {
   formValues: { [key: string]: string };
   submitHandler: (e: React.FormEvent) => void;
   isLoading: boolean;
+  isRequired?: boolean;
   errors: IErrors[];
   changeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   editorValue: string;
@@ -29,6 +30,7 @@ export default function CMSForm({
   formValues,
   submitHandler,
   isLoading,
+  isRequired,
   errors,
   changeHandler,
   editorValue,
@@ -55,7 +57,7 @@ export default function CMSForm({
         />
       </FormControl>
       <FormControl id="image" label="Post Image" errors={errors}>
-        <Input type="file" name="image" id="image" onChange={changeHandler} />
+        <Input type="file" name="image" id="image" onChange={changeHandler} required={isRequired}/>
       </FormControl>
       <FormControl id="body" label="Post Body" errors={errors}>
         <Editor

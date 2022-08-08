@@ -50,6 +50,7 @@ export default function EditPost() {
         submitHandler={submitHandler}
         changeHandler={changeHandler}
         isLoading={isLoading}
+        isRequired
         errors={errors}
         editorValue={editorValue}
         setEditorValue={setEditorValue}
