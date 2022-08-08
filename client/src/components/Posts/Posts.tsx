@@ -11,7 +11,8 @@ interface PostsProps {
   getFilteredPosts: (tag: string) => Promise<unknown>;
 }
 
-export default function Posts({ data, tags, getFilteredPosts }: PostsProps) {
+const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
+  const { data, tags, getFilteredPosts } = props;
   const { isOpen, open, close } = useModal();
   if (!data) return <div>Loading...</div>;
   const modalRef = React.useRef<HTMLDivElement>(null);
@@ -45,7 +46,7 @@ export default function Posts({ data, tags, getFilteredPosts }: PostsProps) {
 
   return (
     <div ref={parentRef}>
-      <h3>Posts</h3>
+      <h3 ref={ref}>Posts</h3>
       <div className={s['drop-down-container']}>
         <button type="button" onClick={open}>
           Filter by Tags
@@ -77,4 +78,6 @@ export default function Posts({ data, tags, getFilteredPosts }: PostsProps) {
       ))}
     </div>
   );
-}
+});
+
+export default Posts;
