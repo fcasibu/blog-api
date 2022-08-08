@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import s from './Header.module.css';
@@ -20,16 +19,7 @@ function Nav() {
     navigate('/');
   };
 
-  const links = !user ? (
-    <>
-      <li>
-        <Link to="/signin">Sign in</Link>
-      </li>
-      <li>
-        <Link to="/signup">Sign up</Link>
-      </li>
-    </>
-  ) : (
+  const links = user ? (
     <>
       <li>
         <Link to="/cms">CMS</Link>
@@ -38,6 +28,15 @@ function Nav() {
         <button type="button" onClick={clickHandler}>
           Sign Out
         </button>
+      </li>
+    </>
+  ) : (
+    <>
+      <li>
+        <Link to="/signin">Sign in</Link>
+      </li>
+      <li>
+        <Link to="/signup">Sign up</Link>
       </li>
     </>
   );

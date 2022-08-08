@@ -2,10 +2,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 2rem 0;
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;
+}
+
+.links li, .links button {
+  font-size: 1.5rem;
+}
+
+.header a:hover, .header button:hover {
+  color: brown; 
+}
+
+.links button {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
