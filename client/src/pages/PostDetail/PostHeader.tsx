@@ -1,3 +1,5 @@
+import s from './PostDetail.module.css';
+
 interface PostHeaderProps {
   author: string;
   tag: string;
@@ -14,14 +16,14 @@ export default function PostHeader({
   image
 }: PostHeaderProps) {
   return (
-    <div>
-      <div>
+    <div className={s.header}>
+      <div className={s.header__top}>
         <span>{tag}</span>
         <span>{date}</span>
         <span>{author}</span>
       </div>
       <h1>{title}</h1>
-      <div>
+      <div className={s['image-container']}>
         <img src={image} alt="" />
       </div>
     </div>
