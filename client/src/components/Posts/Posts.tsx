@@ -8,14 +8,15 @@ import s from './Posts.module.css';
 interface PostsProps {
   data: IPost[];
   tags: ITags[];
-  getFilteredPosts: (tag: string) => Promise<unknown>;
+  getFilteredPosts: (tag: string) => Promise<void>;
+  getAllPost: () => Promise<void>;
 }
 
 const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
-  const { data, tags, getFilteredPosts } = props;
+  const { data, tags, getFilteredPosts, getAllPost } = props;
   const { isOpen, open, close } = useModal();
   if (!data) return <div>Loading...</div>;
-  const modalRef = React.useRef<HTMLDivElement>(null);
+  const modalRef = React.useRef<HTMLDivElement | null>(null);
   const [parentRef] = useAutoAnimate<HTMLDivElement>();
   const [currentTag, setCurrentTag] = React.useState('');
 
@@ -45,15 +46,20 @@ const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
   };
 
   return (
-    <div ref={parentRef}>
-      <h3 ref={ref}>Posts</h3>
+    <div ref={parentRef} className={s['posts-section']}>
+      <h3 ref={ref} className={s['section-title']}>
+        Posts
+      </h3>
       <div className={s['drop-down-container']}>
+        <button type="button" onClick={getAllPost}>
+          All
+        </button>
         <button type="button" onClick={open}>
           Filter by Tags
         </button>
         {isOpen && (
           <div
-            className={[s['drop-down'], s['drop-down--left']].join(' ')}
+            className={[s['drop-down'], s['drop-down--right']].join(' ')}
             ref={modalRef}
           >
             <div className={s['drop-down__beak']} />
