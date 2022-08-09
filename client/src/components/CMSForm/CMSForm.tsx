@@ -5,10 +5,10 @@ import Form, { FormControl, IErrors, Input } from '../Form';
 
 const init = {
   height: 500,
-  menubar: true,
+  menubar: false,
   toolbar:
     'undo redo | formatselect | ' +
-    'bold italic backcolor | alignleft aligncenter ' +
+    'bold italic | alignleft aligncenter ' +
     'alignright alignjustify | bullist numlist outdent indent | ' +
     'removeformat | help',
   content_style:
@@ -57,7 +57,13 @@ export default function CMSForm({
         />
       </FormControl>
       <FormControl id="image" label="Post Image" errors={errors}>
-        <Input type="file" name="image" id="image" onChange={changeHandler} required={isRequired}/>
+        <Input
+          type="file"
+          name="image"
+          id="image"
+          onChange={changeHandler}
+          required={isRequired}
+        />
       </FormControl>
       <FormControl id="body" label="Post Body" errors={errors}>
         <Editor
