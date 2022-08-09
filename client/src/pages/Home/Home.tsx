@@ -4,7 +4,7 @@ import Posts from '../../components/Posts';
 import useDB from '../../hooks/useDB';
 
 export default function Home() {
-  const { documents, getFilteredPosts, getAllPost } = useDB();
+  const { documents, getFilteredPosts, getAllPost, loadPost } = useDB();
   const postsRef = React.useRef<HTMLHeadingElement | null>(null);
 
   const scrollToPosts = () => {
@@ -23,6 +23,7 @@ export default function Home() {
         tags={documents.tags}
         getFilteredPosts={getFilteredPosts}
         getAllPost={getAllPost}
+        loadPost={loadPost}
         ref={postsRef}
       />
     </>
