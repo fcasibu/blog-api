@@ -49,6 +49,7 @@ const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
   };
 
   const filterAll = () => {
+    if (!currentTag) return;
     setCurrentTag('');
     getAllPost();
     setPageCount(2);
