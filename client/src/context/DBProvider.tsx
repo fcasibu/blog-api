@@ -45,14 +45,16 @@ interface IDocuments {
 
 interface IDatabase {
   documents: IDocuments;
-  getFilteredPosts: (tag: string) => Promise<any>;
-  getPost: (postId: string) => Promise<any>;
+  getFilteredPosts: (tag: string) => Promise<void>;
+  getAllPost: () => Promise<void>;
+  getPost: (postId: string) => Promise<void>;
   createComment: (body: string, postId: string) => Promise<any>;
 }
 
 export const DBContext = React.createContext<IDatabase>({
   documents: {} as IDocuments,
   getFilteredPosts: async () => undefined,
+  getAllPost: async () => undefined,
   getPost: async () => undefined,
   createComment: async () => undefined
 });
@@ -68,6 +70,15 @@ export default function DBProvider({
     newPosts: [],
     post: null
   });
+
+  const getAllPost = async () => {
+    const response = await axios.get(`${SERVERURL}/api/posts`);
+
+    setDocuments((prevState) => ({
+      ...prevState,
+      posts: response.data.posts
+    }));
+  };
 
   const getFilteredPosts = async (tag: string) => {
     const response = await axios.get(`${SERVERURL}/api/posts?tag=${tag}`);
@@ -133,7 +144,13 @@ export default function DBProvider({
   }, []);
 
   const values = React.useMemo(
-    () => ({ documents, getFilteredPosts, getPost, createComment }),
+    () => ({
+      documents,
+      getFilteredPosts,
+      getAllPost,
+      getPost,
+      createComment
+    }),
     [documents]
   );
 
