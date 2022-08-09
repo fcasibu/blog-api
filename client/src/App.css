@@ -22,6 +22,14 @@ li {
   list-style-type: none;
 }
 
+img {
+  max-width: 100%;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
 body {
   font-size: 1.6rem;
   font-family: 'Inter';
