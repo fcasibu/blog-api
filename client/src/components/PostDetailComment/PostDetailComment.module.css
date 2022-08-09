@@ -1,0 +1,46 @@
+.comment-box {
+  position: relative;
+  border-radius: 3px;
+  box-shadow:  0px 7px 29px 0px rgba(100, 100, 111, 0.2);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.comment-box__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.comment-box__header span {
+  font-size: 1rem;
+}
+
+.comment-box h4::first-letter {
+  text-transform: uppercase;
+}
+
+.load-more {
+ background: none;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid brown;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+  margin-bottom: 3rem;
+}
+
+.load-more:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 1rem rgba(165, 42, 42, 0.2);
+}
+
+.load-more:active {
+  transform: scale(1);
+  box-shadow: 0 0 0 rgba(165, 42, 42, 0.2);
+}
+
+

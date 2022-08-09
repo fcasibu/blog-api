@@ -9,6 +9,7 @@ import Form, { FormControl } from "../Form";
 import { TextArea } from "../Form/TextArea";
 import { CommentList } from "./CommentList";
 import useAuth from "../../hooks/useAuth";
+import s from './PostDetailComment.module.css';
 
 interface PostDetailCommentProps {
   comments: IComment[];
@@ -19,11 +20,13 @@ const initialValues = {
   text: ''
 }
 
+// Refactor duplicates
 export default function PostDetailComment({ comments, postId }: PostDetailCommentProps) {
   const { user } = useAuth();
-  const { createComment, getPost } = useDB();
+  const { createComment, getPost, loadComments } = useDB();
   const { formValues, changeHandler, errors, setErrors } = useForm(initialValues);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [pageCount, setPageCount] = React.useState(2);
   const [parentRef] = useAutoAnimate<HTMLDivElement>()
 
   const submitHandler = async (e: React.FormEvent) => {
@@ -35,22 +38,32 @@ export default function PostDetailComment({ comments, postId }: PostDetailCommen
       if (response.data.errors) return setErrors(response.data.errors);
 
       await getPost(postId);
+      setPageCount(2);
       setErrors([]);
     } catch (err) {
       setErrors(handleAuthError(err as AxiosError));
     }
   }
 
+  const loadMoreHandler = () => {
+    loadComments(pageCount, postId);
+    setPageCount(pageCount + 1);
+  };
+
   return (
     <div ref={parentRef}>
       <h4>Comments</h4>
-      <CommentList comments={comments} />
       {user ?
         <Form onSubmit={submitHandler} isLoading={isLoading}>
           <FormControl id="text" label="Write a Comment" errors={errors}>
             <TextArea name="text" id="text" value={formValues.text} onChange={changeHandler} />
           </FormControl>
         </Form> : <div>You must be logged in to post a comment!</div>}
+      <CommentList comments={comments} />
+      {comments.length % (10 * (pageCount - 1)) === 0 &&
+        <button className={s['load-more']} type="button" onClick={loadMoreHandler}>
+          Load more
+        </button>}
     </div>
   )
 }

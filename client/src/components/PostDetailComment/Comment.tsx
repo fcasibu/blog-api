@@ -1,6 +1,7 @@
 import React from 'react';
 import { IComment } from '../../context/DBProvider';
 import useCMS from '../../hooks/useCMS';
+import s from './PostDetailComment.module.css';
 
 export interface CommentProps {
   comment: IComment;
@@ -16,10 +17,12 @@ export const Comment = React.memo(({ comment, isAuthor, postId }: CommentProps) 
   }
 
   return (
-    <div>
-      <h5>{comment.user.username}</h5>
+    <div className={s["comment-box"]}>
+      <div className={s['comment-box__header']}>
+        <h4>{comment.user.username}</h4>
+        <span>{comment.formattedDate}</span>
+      </div>
       <p>{comment.text}</p>
-      <span>{comment.formattedDate}</span>
       {isAuthor && (
         <div>
           <button type="button" onClick={deleteHandler}>
