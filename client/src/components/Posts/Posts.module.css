@@ -1,10 +1,108 @@
-.drop-down-container {
+.posts-section {
   position: relative;
+}
+
+.section-title {
+  font-size: 3rem;
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.post {
+  display: grid;
+  grid-template-columns: repeat(2, 500px);
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.image-container img {
+  height: 100%;
+}
+
+.post-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.post-info__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.post-info__header > div {
+  display: flex;
+  gap: 1rem;
+}
+
+.post-info__header > div span:first-child {
+  text-transform: capitalize;
+}
+
+.post-info__header > span {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.post-info__body div * {
+  display: inline-block !important;
+  background-color: white !important;
+  font-size: 1.5rem !important;
+  line-height: 1.4 !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+}
+
+.post-info__body div {
+  display: -webkit-box;
+  max-width: 100%;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-info__body h3 {
+  font-size: 3rem;
+}
+
+.post-info__body h3::first-letter {
+  text-transform: uppercase;
+}
+
+.post-info__footer {
+  position: absolute;
+  bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.post-info__footer a:hover {
+  color: brown;
+}
+
+.drop-down-container {
+  position: absolute;
+  top: 3rem;
+  left: 0;
+}
+
+.drop-down-container > button {
+  background: none;
+  border: none;
+  color: brown;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 0 1rem;
 }
 
 .drop-down {
   position: absolute;
-  top: 3rem;
+  top: 3.5rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
