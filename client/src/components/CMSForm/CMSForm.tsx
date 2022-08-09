@@ -6,13 +6,14 @@ import Form, { FormControl, IErrors, Input } from '../Form';
 const init = {
   height: 500,
   menubar: false,
+  plugins: 'codesample',
   toolbar:
     'undo redo | formatselect | ' +
     'bold italic | alignleft aligncenter ' +
     'alignright alignjustify | bullist numlist outdent indent | ' +
-    'removeformat | help',
+    'removeformat | codesample',
   content_style:
-    'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+    'body { font-family:Helvetica,Arial,sans-serif; font-size:18px }'
 };
 
 interface CMSFormProps {
