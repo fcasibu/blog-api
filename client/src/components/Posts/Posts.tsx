@@ -101,7 +101,7 @@ const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
       {data.map((el: IPost) => (
         <Item postDetails={el} key={el._id} />
       ))}
-      {data.length % 10 === 0 &&
+      {data.length % (10 * (pageCount - 1)) === 0 &&
         <button className={s['load-more']} type="button" onClick={loadMoreHandler}>
           Load more
         </button>}
