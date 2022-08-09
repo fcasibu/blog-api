@@ -45,6 +45,7 @@ interface IDocuments {
 
 interface IDatabase {
   documents: IDocuments;
+  loadPost: (page: number, tag?: string) => Promise<void>;
   getFilteredPosts: (tag: string) => Promise<void>;
   getAllPost: () => Promise<void>;
   getPost: (postId: string) => Promise<void>;
@@ -53,6 +54,7 @@ interface IDatabase {
 
 export const DBContext = React.createContext<IDatabase>({
   documents: {} as IDocuments,
+  loadPost: async () => undefined,
   getFilteredPosts: async () => undefined,
   getAllPost: async () => undefined,
   getPost: async () => undefined,
@@ -70,6 +72,19 @@ export default function DBProvider({
     newPosts: [],
     post: null
   });
+
+  const loadPost = async (page: number, tag?: string) => {
+    const tagQuery = `&tag=${tag}`
+    const response = await axios.get(
+      `${SERVERURL}/api/posts?page=${page}${tag ? tagQuery : ''}`
+    );
+    const newPosts = response.data.posts;
+
+    setDocuments((prevState) => ({
+      ...prevState,
+      posts: prevState.posts.concat(newPosts)
+    }));
+  };
 
   const getAllPost = async () => {
     const response = await axios.get(`${SERVERURL}/api/posts`);
@@ -146,6 +161,7 @@ export default function DBProvider({
   const values = React.useMemo(
     () => ({
       documents,
+      loadPost,
       getFilteredPosts,
       getAllPost,
       getPost,
