@@ -31,7 +31,7 @@ export const getPost = catchAsync(async (req, res, next) => {
     _id: req.params.postId,
     published: { $eq: true }
   })
-    .populate({ path: 'user', select: 'username' })
+    .populate({ path: 'author', select: 'username' })
     .exec();
 
   if (!post) return next(new Error('Post does not exist'));
