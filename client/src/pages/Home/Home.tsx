@@ -4,24 +4,25 @@ import Posts from '../../components/Posts';
 import useDB from '../../hooks/useDB';
 
 export default function Home() {
-  const { documents, getFilteredPosts } = useDB();
+  const { documents, getFilteredPosts, getAllPost } = useDB();
   const postsRef = React.useRef<HTMLHeadingElement | null>(null);
 
   const scrollToPosts = () => {
-    if(postsRef.current) {
+    if (postsRef.current) {
       postsRef.current.scrollIntoView({
         behavior: 'smooth'
-      })
+      });
     }
-  }
+  };
 
   return (
     <>
-      <Hero newPosts={documents.newPosts} scrollToPosts={scrollToPosts}/>
+      <Hero newPosts={documents.newPosts} scrollToPosts={scrollToPosts} />
       <Posts
         data={documents.posts}
         tags={documents.tags}
         getFilteredPosts={getFilteredPosts}
+        getAllPost={getAllPost}
         ref={postsRef}
       />
     </>
