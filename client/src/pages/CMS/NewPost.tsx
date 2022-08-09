@@ -12,10 +12,7 @@ const formInitialValues = {
 };
 
 export default function EditPost() {
-  const {
-    getPost,
-    createPost
-  } = useCMS();
+  const { getPost, createPost } = useCMS();
   const [editorValue, setEditorValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const { formValues, changeHandler, errors, setErrors } =
