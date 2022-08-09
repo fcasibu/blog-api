@@ -10,10 +10,12 @@ interface PostsProps {
   tags: ITags[];
   getFilteredPosts: (tag: string) => Promise<void>;
   getAllPost: () => Promise<void>;
+  loadPost: (page: number, tag?: string) => Promise<void>;
 }
 
 const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
-  const { data, tags, getFilteredPosts, getAllPost } = props;
+  const { data, tags, getFilteredPosts, getAllPost, loadPost } = props;
+  const [pageCount, setPageCount] = React.useState(2);
   const { isOpen, open, close } = useModal();
   if (!data) return <div>Loading...</div>;
   const modalRef = React.useRef<HTMLDivElement | null>(null);
@@ -43,6 +45,22 @@ const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
     setCurrentTag(value);
 
     getFilteredPosts(value);
+    setPageCount(2);
+  };
+
+  const filterAll = () => {
+    setCurrentTag('');
+    getAllPost();
+    setPageCount(2);
+  };
+
+  const loadMoreHandler = () => {
+    if (currentTag) {
+      loadPost(pageCount, currentTag);
+    } else {
+      loadPost(pageCount);
+    }
+    setPageCount(pageCount + 1);
   };
 
   return (
@@ -51,7 +69,7 @@ const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
         Posts
       </h3>
       <div className={s['drop-down-container']}>
-        <button type="button" onClick={getAllPost}>
+        <button type="button" onClick={filterAll}>
           All
         </button>
         <button type="button" onClick={open}>
@@ -82,6 +100,10 @@ const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
       {data.map((el: IPost) => (
         <Item postDetails={el} key={el._id} />
       ))}
+      {data.length % 10 === 0 &&
+        <button className={s['load-more']} type="button" onClick={loadMoreHandler}>
+          Load more
+        </button>}
     </div>
   );
 });
