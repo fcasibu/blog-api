@@ -10,7 +10,9 @@ export default function PostDetail() {
   const { postId } = useParams();
   const {
     documents: { post },
-    getPost
+    getPost,
+    loadComments,
+    createComment
   } = useDB();
   const [parentRef] = useAutoAnimate<HTMLDivElement>();
 
@@ -32,6 +34,9 @@ export default function PostDetail() {
           <PostBody body={post.body} />
           <PostDetailComment
             comments={post.comments}
+            getPost={getPost}
+            loadComments={loadComments}
+            createComment={createComment}
             postId={postId as string}
           />
         </>

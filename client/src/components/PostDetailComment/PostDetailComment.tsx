@@ -2,7 +2,6 @@ import * as React from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { AxiosError } from "axios";
 import { IComment } from "../../context/DBProvider";
-import useDB from "../../hooks/useDB";
 import useForm from "../../hooks/useForm";
 import handleAuthError from "../../utils/handleAuthError";
 import Form, { FormControl } from "../Form";
@@ -14,6 +13,9 @@ import s from './PostDetailComment.module.css';
 interface PostDetailCommentProps {
   comments: IComment[];
   postId: string;
+  loadComments: (page: number, postId: string) => Promise<void>;
+  getPost: (postId: string) => Promise<void>;
+  createComment: (body: string, postId: string) => Promise<any>;
 }
 
 const initialValues = {
@@ -21,9 +23,9 @@ const initialValues = {
 }
 
 // Refactor duplicates
-export default function PostDetailComment({ comments, postId }: PostDetailCommentProps) {
+export default function PostDetailComment(props: PostDetailCommentProps) {
+  const { comments, postId, createComment, getPost, loadComments } = props;
   const { user } = useAuth();
-  const { createComment, getPost, loadComments } = useDB();
   const { formValues, changeHandler, errors, setErrors } = useForm(initialValues);
   const [isLoading, setIsLoading] = React.useState(false);
   const [pageCount, setPageCount] = React.useState(2);
