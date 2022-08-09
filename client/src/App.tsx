@@ -3,6 +3,7 @@ import Header from './components/Header';
 import AuthProvider from './context/AuthProvider';
 import AppRoute from './routes';
 import './App.css';
+import './prism.css';
 import DBProvider from './context/DBProvider';
 import CMSProvider from './context/CMSProvider';
 
