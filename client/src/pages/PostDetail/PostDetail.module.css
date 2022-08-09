@@ -1,0 +1,55 @@
+.header__top {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.header__top span:first-child {
+  text-transform: capitalize;
+}
+
+.header__top span:last-child {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  font-size: 4.5rem;
+  text-align: center;
+}
+
+.header h1::first-letter {
+  text-transform: uppercase;
+}
+
+.image-container {
+  width: 100%;
+}
+
+.image-container img {
+  width: inherit;
+  height: 350px;
+}
+
+.post-body {
+  font-size: 1.7rem;
+  margin: 2rem 0;
+  word-wrap: break-word;
+}
+
+.post-body ul li {
+  list-style-type: disc;
+  margin: 1rem 0;
+  margin-left: 3rem;
+}
+
+.post-body a {
+  text-decoration: underline;
+  color: brown;
+}
+
+.post-body p {
+  white-space: prewrap;
+}
