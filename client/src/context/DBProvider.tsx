@@ -45,6 +45,7 @@ interface IDocuments {
 
 interface IDatabase {
   documents: IDocuments;
+  loadComments: (page: number, postId: string) => Promise<void>;
   loadPost: (page: number, tag?: string) => Promise<void>;
   getFilteredPosts: (tag: string) => Promise<void>;
   getAllPost: () => Promise<void>;
@@ -54,6 +55,7 @@ interface IDatabase {
 
 export const DBContext = React.createContext<IDatabase>({
   documents: {} as IDocuments,
+  loadComments: async () => undefined,
   loadPost: async () => undefined,
   getFilteredPosts: async () => undefined,
   getAllPost: async () => undefined,
@@ -72,6 +74,18 @@ export default function DBProvider({
     newPosts: [],
     post: null
   });
+
+  const loadComments = async (page: number, postId: string) => {
+    const response = await axios.get(`${SERVERURL}/api/posts/${postId}/comments?page=${page}`)
+    const newComments = response.data.comments;
+    const postCopy = JSON.parse(JSON.stringify(documents.post));
+    postCopy.comments = [...postCopy.comments, ...newComments]
+
+    setDocuments((prevState) => ({
+      ...prevState,
+      post: postCopy
+    }))
+  }
 
   const loadPost = async (page: number, tag?: string) => {
     const tagQuery = `&tag=${tag}`
@@ -161,6 +175,7 @@ export default function DBProvider({
   const values = React.useMemo(
     () => ({
       documents,
+      loadComments,
       loadPost,
       getFilteredPosts,
       getAllPost,
