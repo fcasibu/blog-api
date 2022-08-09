@@ -38,11 +38,26 @@ export const getPost = catchAsync(async (req, res, next) => {
 
   const comments = await Comment.find({ post: req.params.postId })
     .select('-post')
+    .limit(10)
+    .sort('-createdAt')
     .populate({ path: 'user', select: 'username' })
     .exec();
 
   return sendResponse(res, 200, { post, comments });
 });
+
+export const getAllComment = catchAsync(async (req, res, next) => {
+  const skip = paginate(Number(req.query.page ?? 1));
+  const comments = await Comment.find({ post: req.params.postId })
+    .select('-post')
+    .skip(skip)
+    .limit(10)
+    .sort('-createdAt')
+    .populate({ path: 'user', select: 'username' })
+    .exec();
+
+  return sendResponse(res, 200, { comments });
+})
 
 // TODO: POST request for comment
 export const createComment = catchAsync(async (req, res, next) => {

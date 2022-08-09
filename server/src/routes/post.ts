@@ -2,6 +2,7 @@ import express from 'express';
 import { verify } from '../controllers/authController';
 import {
   createComment,
+  getAllComment,
   getAllNewPost,
   getAllPost,
   getAllTag,
@@ -21,5 +22,7 @@ router
   .route('/:postId')
   .get(getPost)
   .post(verify, validateComment(), isValid, createComment);
+
+router.route('/:postId/comments').get(getAllComment)
 
 export default router;
