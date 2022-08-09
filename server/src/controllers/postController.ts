@@ -30,13 +30,15 @@ export const getPost = catchAsync(async (req, res, next) => {
   const post = await Post.findOne({
     _id: req.params.postId,
     published: { $eq: true }
-  }).exec();
+  })
+    .populate({ path: 'user', select: 'username' })
+    .exec();
 
   if (!post) return next(new Error('Post does not exist'));
 
   const comments = await Comment.find({ post: req.params.postId })
     .select('-post')
-    .populate('user')
+    .populate({ path: 'user', select: 'username' })
     .exec();
 
   return sendResponse(res, 200, { post, comments });
