@@ -64,6 +64,10 @@
   overflow: hidden;
 }
 
+.post-info__body pre {
+  display: none !important;
+}
+
 .post-info__body h3 {
   font-size: 3rem;
 }
