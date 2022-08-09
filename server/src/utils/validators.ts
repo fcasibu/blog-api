@@ -1,7 +1,7 @@
 import { check } from 'express-validator';
 import User from '../model/user';
 
-export const validateSignIn = function () {
+export const validateSignIn = function() {
   return [
     check('email').isEmail().withMessage('You have entered an invalid email'),
     check('password')
@@ -12,7 +12,7 @@ export const validateSignIn = function () {
   ];
 };
 
-export const validateSignUp = function () {
+export const validateSignUp = function() {
   return [
     check('username')
       .isLength({ min: 3, max: 15 })
@@ -41,7 +41,7 @@ export const validateSignUp = function () {
   ];
 };
 
-export const validatePost = function () {
+export const validatePost = function() {
   return [
     check('title')
       .matches(/^[A-Za-z0-9\s]+$/)
@@ -59,10 +59,10 @@ export const validatePost = function () {
   ];
 };
 
-export const validateComment = function () {
+export const validateComment = function() {
   return [
     check('text')
-      .matches(/^[A-Za-z0-9 _.,!"'&/$]+$/)
+      .matches(/^[A-Za-z0-9"'.,!?-\s]+$/)
       .withMessage('Comment must not contain invalid characters')
       .isLength({ min: 5, max: 500 })
       .withMessage('Comment must have a min and max length of 5-500 characters')
