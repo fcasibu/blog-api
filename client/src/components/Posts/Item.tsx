@@ -9,14 +9,16 @@ interface ItemProps {
 
 export default function Item({ postDetails }: ItemProps) {
   return (
-    <div>
+    <div className={s.post}>
       <div className={s['image-container']}>
         <img src={postDetails.image} alt="" />
       </div>
       <div className={s['post-info']}>
         <div className={s['post-info__header']}>
-          <span>{postDetails.tag}</span>
-          <span>{postDetails.formattedDate}</span>
+          <div>
+            <span>{postDetails.tag}</span>
+            <span>{postDetails.formattedDate}</span>
+          </div>
           <span>{postDetails.author.username}</span>
         </div>
         <div className={s['post-info__body']}>
@@ -24,7 +26,7 @@ export default function Item({ postDetails }: ItemProps) {
           <div>{parse(postDetails.body)}</div>
         </div>
         <div className={s['post-info__footer']}>
-          <Link to={`/posts/${postDetails._id}`}>Read More</Link>
+          <Link to={`/posts/${postDetails._id}`}>Read More &rarr;</Link>
           <div>
             <span>{postDetails.commentCount}</span>
           </div>
