@@ -78,6 +78,16 @@
   .cms {
     flex-direction: column;
   }
-  .sidebar {
+}
+
+@media (max-width: 560px) {
+  .post-card {
+    height: 170px;
+  }
+
+  .buttons button {
+    width: 80px;
+    height: 20px;
+    font-size: 1.4rem;
   }
 }
