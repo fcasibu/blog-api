@@ -76,19 +76,21 @@ export default function DBProvider({
   });
 
   const loadComments = async (page: number, postId: string) => {
-    const response = await axios.get(`${SERVERURL}/api/posts/${postId}/comments?page=${page}`)
+    const response = await axios.get(
+      `${SERVERURL}/api/posts/${postId}/comments?page=${page}`
+    );
     const newComments = response.data.comments;
     const postCopy = JSON.parse(JSON.stringify(documents.post));
-    postCopy.comments = [...postCopy.comments, ...newComments]
+    postCopy.comments = [...postCopy.comments, ...newComments];
 
     setDocuments((prevState) => ({
       ...prevState,
       post: postCopy
-    }))
-  }
+    }));
+  };
 
   const loadPost = async (page: number, tag?: string) => {
-    const tagQuery = `&tag=${tag}`
+    const tagQuery = `&tag=${tag}`;
     const response = await axios.get(
       `${SERVERURL}/api/posts?page=${page}${tag ? tagQuery : ''}`
     );

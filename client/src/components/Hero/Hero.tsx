@@ -23,7 +23,9 @@ function Hero({ newPosts, scrollToPosts }: HeroProps) {
         Multiple fantastic authors. Filled with posts that satisfies your daily
         reading needs
       </p>
-      <button type="button" onClick={scrollToPosts}>Check Them Out</button>
+      <button type="button" onClick={scrollToPosts}>
+        Check Them Out
+      </button>
       <div className={s['image-container']}>
         {newPosts.map((post) => (
           <Link

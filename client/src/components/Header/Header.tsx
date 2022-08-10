@@ -50,10 +50,12 @@ function Nav() {
 
 function Header() {
   return (
-    <header className={s.header}>
-      <SiteLogo />
-      <Nav />
-    </header>
+    <div className={s['header-container']}>
+      <header className={s.header}>
+        <SiteLogo />
+        <Nav />
+      </header>
+    </div>
   );
 }
 

@@ -4,6 +4,7 @@ import { IPost, ITags } from '../../context/DBProvider';
 import useModal from '../../hooks/useModal';
 import Item from './Item';
 import s from './Posts.module.css';
+import usePagination from '../../hooks/usePagination';
 
 interface PostsProps {
   data: IPost[];
@@ -15,9 +16,8 @@ interface PostsProps {
 
 const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
   const { data, tags, getFilteredPosts, getAllPost, loadPost } = props;
-  const [pageCount, setPageCount] = React.useState(2);
+  const { pageCount, loadMoreHandler, setPageCount } = usePagination();
   const { isOpen, open, close } = useModal();
-  if (!data) return <div>Loading...</div>;
   const modalRef = React.useRef<HTMLDivElement | null>(null);
   const [parentRef] = useAutoAnimate<HTMLDivElement>();
   const [currentTag, setCurrentTag] = React.useState('');
@@ -55,15 +55,6 @@ const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
     setPageCount(2);
   };
 
-  const loadMoreHandler = () => {
-    if (currentTag) {
-      loadPost(pageCount, currentTag);
-    } else {
-      loadPost(pageCount);
-    }
-    setPageCount(pageCount + 1);
-  };
-
   return (
     <div ref={parentRef} className={s['posts-section']}>
       <h3 ref={ref} className={s['section-title']}>
@@ -98,13 +89,21 @@ const Posts = React.forwardRef<HTMLHeadingElement, PostsProps>((props, ref) => {
           </div>
         )}
       </div>
+      {!data.length && <div style={{textAlign: 'center', fontSize: '3rem'}}>No Post</div>}
       {data.map((el: IPost) => (
         <Item postDetails={el} key={el._id} />
       ))}
-      {data.length % (10 * (pageCount - 1)) === 0 &&
-        <button className={s['load-more']} type="button" onClick={loadMoreHandler}>
+      {data.length && data.length % (10 * (pageCount - 1)) === 0 ? (
+        <button
+          className={s['load-more']}
+          type="button"
+          onClick={() => loadMoreHandler({ cb: loadPost, tag: currentTag })}
+        >
           Load more
-        </button>}
+        </button>
+      ) : (
+        ''
+      )}
     </div>
   );
 });

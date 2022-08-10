@@ -1,0 +1,51 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form input:not([type='file']),
+.form textarea {
+  width: 100%;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  padding: 1rem;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+    rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+.form textarea {
+  height: 200px;
+  resize: none;
+}
+
+.form button {
+  position: relative;
+  display: block;
+  align-self: flex-start;
+  background-color: brown;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  width: 120px;
+  height: 40px;
+  padding: 0.5rem 2rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+  margin-bottom: 1rem;
+}
+
+.form button:hover {
+  opacity: 0.8;
+}
+
+.label-text {
+  font-size: 1.4rem;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  color: red;
+  margin-top: 1rem;
+}

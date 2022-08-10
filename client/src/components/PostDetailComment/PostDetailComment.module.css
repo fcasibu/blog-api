@@ -43,4 +43,14 @@
   box-shadow: 0 0 0 rgba(165, 42, 42, 0.2);
 }
 
-
+.delete-button {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}

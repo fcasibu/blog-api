@@ -1,7 +1,18 @@
+.header-container {
+  position: sticky;
+  top: 0;
+  display: flex;
+  margin:1em calc(50% - 50vw);
+  justify-content: center;
+  background-color: white;
+  z-index: 100;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 55%;
   padding: 2rem 0;
 }
 
@@ -11,12 +22,14 @@
   gap: 3rem;
 }
 
-.links li, .links button {
+.links li,
+.links button {
   font-size: 1.5rem;
 }
 
-.header a:hover, .header button:hover {
-  color: brown; 
+.header a:hover,
+.header button:hover {
+  color: brown;
 }
 
 .links button {

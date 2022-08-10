@@ -32,7 +32,7 @@ export const getAllUserPost = catchAsync(async (req, res, next) => {
     .skip(skip)
     .limit(10)
     .sort('-createdAt')
-    .populate({ path: 'author', select: '-password' })
+    .populate('author', '-password')
     .populate('commentCount')
     .exec();
 
@@ -47,7 +47,7 @@ export const getAllUnpublishedPost = catchAsync(async (req, res, next) => {
     .skip(skip)
     .limit(10)
     .sort('-createdAt')
-    .populate({ path: 'author', select: '-password' })
+    .populate('author', '-password')
     .populate('commentCount')
     .exec();
 
@@ -62,7 +62,7 @@ export const getAllPublishedPost = catchAsync(async (req, res, next) => {
     .skip(skip)
     .limit(10)
     .sort('-createdAt')
-    .populate({ path: 'author', select: '-password' })
+    .populate('author', '-password')
     .populate('commentCount')
     .exec();
 
@@ -106,7 +106,14 @@ export const createUserPost = catchAsync(async (req, res, next) => {
 
 // TODO: GET request for author's post
 export const getUserPost = catchAsync(async (req, res, next) => {
-  const commentQuery = Comment.find({ post: req.params.postId }).exec();
+  const skip = paginate(Number(req.query.page ?? 1));
+  const commentQuery = Comment.find({ post: req.params.postId })
+    .skip(skip)
+    .limit(10)
+    .sort('-createdAt')
+    .populate('user', 'username')
+    .select('-post')
+    .exec();
   const postQuery = Post.findById(req.params.postId).exec();
 
   const [post, comments] = await Promise.all([postQuery, commentQuery]);
@@ -128,7 +135,7 @@ export const deleteUserPost = catchAsync(async (req, res, next) => {
 // TODO: PUT request for author's post
 export const updateUserPost = catchAsync(async (req, res, next) => {
   const image = req.file && formatBufferTo64(req.file);
-  const uploadResult = image && await cloudinaryUpload(image.content);
+  const uploadResult = image && (await cloudinaryUpload(image.content));
   const post = await Post.findByIdAndUpdate(
     req.params.postId,
     {

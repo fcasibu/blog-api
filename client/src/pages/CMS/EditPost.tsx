@@ -7,6 +7,8 @@ import useCMS from '../../hooks/useCMS';
 import handleAuthError from '../../utils/handleAuthError';
 import { CommentList } from '../../components/PostDetailComment/CommentList';
 import CMSForm from '../../components/CMSForm';
+import s from './CMS.module.css';
+import usePagination from '../../hooks/usePagination';
 
 const formInitialValues = {
   title: '',
@@ -18,9 +20,11 @@ export default function EditPost() {
   const {
     documents: { post },
     getPost,
-    editPost
+    editPost,
+    loadComments
   } = useCMS();
   const { postId } = useParams();
+  const { loadMoreHandler, pageCount } = usePagination();
   const [commentRef] = useAutoAnimate<HTMLDivElement>();
   const [editorValue, setEditorValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
@@ -65,7 +69,7 @@ export default function EditPost() {
   }, [post]);
 
   return (
-    <div>
+    <div className={s['edit-post']}>
       <CMSForm
         formValues={formValues}
         submitHandler={submitHandler}
@@ -78,11 +82,23 @@ export default function EditPost() {
       <div ref={commentRef}>
         <h4>Comments</h4>
         {post?.comments.length ? (
-          <CommentList comments={post.comments} isAuthor postId={postId}/>
+          <CommentList comments={post.comments} isAuthor postId={postId} />
         ) : (
           <p>There are no comments on this blog post</p>
         )}
       </div>
+      {post?.comments.length &&
+      post.comments.length % (10 * (pageCount - 1)) === 0 ? (
+        <button
+          className={s['load-more']}
+          type="button"
+          onClick={() => loadMoreHandler({ cb: loadComments, postId })}
+        >
+          Load more
+        </button>
+      ) : (
+        ''
+      )}
     </div>
   );
 }

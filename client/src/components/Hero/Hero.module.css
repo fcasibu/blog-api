@@ -53,6 +53,10 @@
   filter: blur(3px) brightness(50%);
 }
 
+.image-title::first-letter {
+ text-transform: uppercase; 
+}
+
 .image-container img:hover + .image-title {
   opacity: 1;
   visibility: visible;

@@ -37,7 +37,7 @@ export default function SignIn() {
   };
 
   return (
-    <div>
+    <div className={s.signin}>
       <h2>Sign In to gain access to features!</h2>
       <div>
         <div className={s['image-container']}>

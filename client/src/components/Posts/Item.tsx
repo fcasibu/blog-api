@@ -23,7 +23,7 @@ export default function Item({ postDetails }: ItemProps) {
         </div>
         <div className={s['post-info__body']}>
           <h3>{postDetails.title}</h3>
-          <div>{parse(postDetails.body.slice(0, 700))}</div>
+          <div>{parse(postDetails.body.slice(0, 200))}</div>
         </div>
         <div className={s['post-info__footer']}>
           <Link to={`/posts/${postDetails._id}`}>Read More &rarr;</Link>

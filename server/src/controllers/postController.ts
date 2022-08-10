@@ -53,7 +53,7 @@ export const getAllComment = catchAsync(async (req, res, next) => {
     .skip(skip)
     .limit(10)
     .sort('-createdAt')
-    .populate({ path: 'user', select: 'username' })
+    .populate('user', 'username')
     .exec();
 
   return sendResponse(res, 200, { comments });

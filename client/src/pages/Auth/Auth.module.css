@@ -1,0 +1,33 @@
+.signup h2,
+.signin h2 {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.signup > div,
+.signin > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem;
+}
+
+.image-container {
+  flex: 1;
+}
+.signup form,
+.signin form {
+  flex: 1;
+}
+
+@media (max-width: 760px) {
+  .signin > div,
+  .signup > div {
+    flex-direction: column;
+  }
+
+  .signin form, .signup form {
+    width: 100%;
+  }
+}

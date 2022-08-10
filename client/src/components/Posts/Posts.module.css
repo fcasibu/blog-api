@@ -1,5 +1,6 @@
 .posts-section {
   position: relative;
+  padding: 2rem;
 }
 
 .section-title {
@@ -197,4 +198,21 @@
 
 .drop-down button:hover {
   background-color: #eee;
+}
+
+@media (max-width: 1040px) {
+  .post {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 475px) {
+  .post {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 200px;
+  }
+
+  .image-container {
+    display: none;
+  }
 }

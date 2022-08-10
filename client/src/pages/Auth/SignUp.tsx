@@ -33,7 +33,7 @@ export default function SignUp() {
   };
 
   return (
-    <>
+    <div className={s.signup}>
       <h2>Sign Up to gain access to features</h2>
       <div>
         <div className={s['image-container']}>
@@ -82,6 +82,6 @@ export default function SignUp() {
           </FormControl>
         </Form>
       </div>
-    </>
+    </div>
   );
 }

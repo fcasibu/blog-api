@@ -2,6 +2,8 @@ import { Editor } from '@tinymce/tinymce-react';
 import React from 'react';
 import { TINYMCE_KEY } from '../../config';
 import Form, { FormControl, IErrors, Input } from '../Form';
+import Spinner from '../Spinner';
+import s from './CMSForm.module.css';
 
 const init = {
   height: 500,
@@ -75,12 +77,14 @@ export default function CMSForm({
           id="body"
         />
       </FormControl>
-      <button type="submit" name="draft" value="false" disabled={isLoading}>
-        {isLoading ? 'Loading...' : 'Save as Draft'}
-      </button>
-      <button type="submit" name="publish" value="true" disabled={isLoading}>
-        {isLoading ? 'Loading...' : 'Publish Post'}
-      </button>
+      <div className={s.buttons}>
+        <button type="submit" name="draft" value="false" disabled={isLoading}>
+          {isLoading ? <Spinner /> : 'Save as Draft'}
+        </button>
+        <button type="submit" name="publish" value="true" disabled={isLoading}>
+          {isLoading ? <Spinner /> : 'Publish Post'}
+        </button>
+      </div>
     </Form>
   );
 }

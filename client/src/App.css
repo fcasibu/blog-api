@@ -34,9 +34,17 @@ body {
   font-size: 1.6rem;
   font-family: 'Inter';
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 .container {
   max-width: 1100px;
   margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 50%;
+  }
 }

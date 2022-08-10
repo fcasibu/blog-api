@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import s from './Form.module.css';
 
 export interface IErrors {
   param: string;
@@ -20,9 +21,9 @@ export function FormControl({ children, id, label, errors = [] }: FormControlPro
 
   return (
     <label htmlFor={id} ref={labelRef}>
-      <p>{label}</p>
+      <p className={s['label-text']}>{label}</p>
       {children}
-      {message && <p>{message}</p>}
+      {message && <p className={s["error-message"]}>{message}</p>}
     </label>
   );
 }

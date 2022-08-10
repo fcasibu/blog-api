@@ -1,0 +1,42 @@
+.sidebar {
+  width: 300px;
+  padding: 2rem;
+}
+
+.sidebar h4 {
+  font-size: 3rem;
+}
+
+.sidebar > div {
+  position: fixed;
+}
+
+.sidebar a {
+  font-size: 2rem;
+}
+
+@media (max-width: 860px) {
+  .sidebar {
+    padding: 0 2rem;
+  }
+  .sidebar h4 {
+    display: none;
+  }
+
+  .sidebar > div {
+    top: 6rem;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    width: 100%;
+    z-index: 100;
+  }
+
+  .sidebar ul {
+    display: flex;
+    gap: 2rem;
+    margin-left: -1rem;
+  }
+}
