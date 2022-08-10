@@ -28,7 +28,7 @@ export default function Item({ postDetails }: ItemProps) {
         <div className={s['post-info__footer']}>
           <Link to={`/posts/${postDetails._id}`}>Read More &rarr;</Link>
           <div>
-            <span>{postDetails.commentCount}</span>
+            <span style={{fontSize: '1.2rem'}}>{postDetails.commentCount} Comments</span>
           </div>
         </div>
       </div>

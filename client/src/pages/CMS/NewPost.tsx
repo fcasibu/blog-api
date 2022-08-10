@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import useForm from '../../hooks/useForm';
 import useCMS from '../../hooks/useCMS';
@@ -13,6 +14,7 @@ const formInitialValues = {
 
 export default function EditPost() {
   const { getPost, createPost } = useCMS();
+  const navigate = useNavigate();
   const [editorValue, setEditorValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const { formValues, changeHandler, errors, setErrors } =
@@ -35,6 +37,7 @@ export default function EditPost() {
       if (response.data.errors) return setErrors(response.data.errors);
 
       await getPost(response.data.post._id as string);
+      navigate(`/cms`)
     } catch (err) {
       setErrors(handleAuthError(err as AxiosError));
     }

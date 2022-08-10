@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import useForm from '../../hooks/useForm';
@@ -23,6 +23,7 @@ export default function EditPost() {
     editPost,
     loadComments
   } = useCMS();
+  const navigate = useNavigate();
   const { postId } = useParams();
   const { loadMoreHandler, pageCount } = usePagination();
   const [commentRef] = useAutoAnimate<HTMLDivElement>();
@@ -48,6 +49,7 @@ export default function EditPost() {
       if (response.data.errors) return setErrors(response.data.errors);
 
       await getPost(postId as string);
+      navigate(`/cms`)
     } catch (err) {
       setErrors(handleAuthError(err as AxiosError));
     }

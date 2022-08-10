@@ -206,7 +206,7 @@
   }
 }
 
-@media (max-width: 475px) {
+@media (max-width: 585px) {
   .post {
     grid-template-columns: 1fr;
     grid-auto-rows: 200px;
