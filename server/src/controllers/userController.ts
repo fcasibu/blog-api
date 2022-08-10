@@ -127,7 +127,9 @@ export const getUserPost = catchAsync(async (req, res, next) => {
 
 // TODO: DELETE request for author's post
 export const deleteUserPost = catchAsync(async (req, res, next) => {
-  await Post.findByIdAndDelete(req.params.postId).exec();
+  const post = Post.findByIdAndDelete(req.params.postId).exec();
+  const comment = Comment.deleteMany({ post: req.params.postId }).exec();
+  await Promise.all([post, comment]);
 
   return sendResponse(res, 204, {});
 });
