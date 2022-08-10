@@ -38,3 +38,5 @@ I still learned a lot reading through their docs and source code.
 [![Tech](https://skillicons.dev/icons?i=ts,css,react,nodejs,express,mongodb,heroku)](https://skillicons.dev)
 
 ## Acknowledgements
+
+- [The Odin Project](https://www.theodinproject.com/)
